@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Define input scheduling file & output folder
+SCHEDULE_FILE="/path/to/scheduling_file.txt"  # Update with actual path
+OUTPUT_FOLDER="/path/to/FileReady"
+MAX_WAIT=60  # Maximum time to wait for file (in seconds)
+WAIT_TIME=0  # Track how long we've waited
+
+# Ensure the output folder exists
+mkdir -p "$OUTPUT_FOLDER"
+
+# Loop to check if scheduling file is ready (with timeout)
+while [ ! -f "$SCHEDULE_FILE" ]; do
+    echo "⏳ Waiting for scheduling file ($WAIT_TIME sec)..."
+
+    # Check if max wait time is exceeded
+    if [ "$WAIT_TIME" -ge "$MAX_WAIT" ]; then
+        echo "❌ Scheduling file not found after $MAX_WAIT seconds. Exiting."
+        exit 1
+    fi
+
+    sleep 5  # Check every 5 seconds
+    WAIT_TIME=$((WAIT_TIME + 5))  # ✅ Correct way to increment an integer
+done
+
+# Function to process the scheduling file
+process_file() {
+    echo "✅ Processing $SCHEDULE_FILE..."
+    
+    while IFS=',' read -r job_id country segment execution_time; do
+        # Skip empty lines
+        if [ -z "$job_id" ] || [ -z "$country" ] || [ -z "$segment" ]; then
+            continue
+        fi
+
+        # Define output CSV file
+        CSV_FILE="$OUTPUT_FOLDER/${country}_${segment}.csv"
+
+        # Add job details to CSV
+        echo "$job_id,$country,$segment,$execution_time" >> "$CSV_FILE"
+
+        echo "📄 Created/Updated CSV: $CSV_FILE"
+    done < "$SCHEDULE_FILE"
+}
+
+# Process the scheduling file once available
+process_file
+
+echo "🎯 Job completed!"

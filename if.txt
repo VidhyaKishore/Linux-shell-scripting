@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Define target folder
+TARGET_FOLDER="/home/emerg1/results_output"
+OUTPUT_FILE="$TARGET_FOLDER/output.log"
+
+# Check if the target folder exists
+if [ ! -d "$TARGET_FOLDER" ]; then  # Ensure spaces inside [ ]
+    echo "Target folder $TARGET_FOLDER does not exist! Creating it..."
+    mkdir -p "$TARGET_FOLDER"
+    echo "Target folder created: $TARGET_FOLDER"
+else
+    echo "Target folder exists: $TARGET_FOLDER"
+fi
+
+# Generate output in the target folder
+echo "Writing results to $OUTPUT_FILE"
+echo "Results generated on: $(date)" > "$OUTPUT_FILE"
+
+echo "Output saved successfully!"

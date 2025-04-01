@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Variables
+SOURCE_DIR="/path/to/source"    # Change this to the folder you want to back up
+BACKUP_DIR="/path/to/backup"    # Backup storage location
+LOG_FILE="/var/log/backup.log"  # Log file location
+DATE=$(date +"%Y-%m-%d_%H-%M-%S")  # Timestamp for unique backup names
+BACKUP_FILE="$BACKUP_DIR/backup_$DATE.tar.gz"
+
+# Ensure backup directory exists
+mkdir -p "$BACKUP_DIR"
+
+# Function to log messages
+log_message() {
+    echo "[$(date +"%Y-%m-%d %H:%M:%S")] $1" | tee -a "$LOG_FILE"
+}
+
+# Start Backup Process
+log_message "Starting backup process..."
+
+if [ ! -d "$SOURCE_DIR" ]; then
+    log_message "ERROR: Source directory $SOURCE_DIR does not exist."
+    exit 1
+fi
+
+# Create a compressed backup
+tar -czf "$BACKUP_FILE" "$SOURCE_DIR" 2>>"$LOG_FILE"
+
+if [ $? -eq 0 ]; then
+    log_message "Backup successful! File saved as: $BACKUP_FILE"
+else
+    log_message "ERROR: Backup failed!"
+    exit 2
+fi
+
+# Cleanup: Remove backups older than 7 days
+find "$BACKUP_DIR" -type f -name "backup_*.tar.gz" -mtime +7 -exec rm {} \;
+log_message "Old backups (older than 7 days) cleaned up."
+
+log_message "Backup job completed successfully!"
+exit 0

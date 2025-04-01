@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Define Input & Output Files
+INPUT_FILE="transactions.log"
+CLEANED_FILE="cleaned_transactions.log"
+REPORT_FILE="transaction_report.csv"
+
+# Ensure input file exists
+if [ ! -f "$INPUT_FILE" ]; then
+    echo "Error: Input file $INPUT_FILE not found!"
+    exit 1
+fi
+
+echo "Cleaning transaction log using sed..."
+# Use `sed` to remove special characters & extra spaces
+sed 's/[#@!%^&*()]//g; s/  */ /g' "$INPUT_FILE" > "$CLEANED_FILE"
+
+echo "Data cleaned and saved to $CLEANED_FILE"
+
+echo "Generating report using awk..."
+# Use `awk` to extract fields & generate a formatted CSV
+awk -F ' ' 'BEGIN {print "Transaction_ID,Customer_Name,Amount,Status"}
+{
+    print $1 "," $2 "," $3 "," $4
+}' "$CLEANED_FILE" > "$REPORT_FILE"
+
+echo "Report generated: $REPORT_FILE"

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Define scheduling file path (Update path if needed)
+SCHEDULE_FILE="/path/to/scheduling_file.txt"
+
+# Create or overwrite the scheduling file
+cat <<EOL > "$SCHEDULE_FILE"
+101,US,Finance,12:00
+102,IN,Retail,14:30
+103,UK,IT,16:00
+104,US,Healthcare,18:00
+105,IN,Finance,19:00
+EOL
+
+# Confirm creation
+echo "Scheduling file created: $SCHEDULE_FILE"
+ls -l "$SCHEDULE_FILE"
+cat "$SCHEDULE_FILE"

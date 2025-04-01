@@ -15,17 +15,17 @@ while [ ! -f "$SCHEDULE_FILE" ]; do
 
     # Check if max wait time is exceeded
     if [ "$WAIT_TIME" -ge "$MAX_WAIT" ]; then
-        echo "❌ Scheduling file not found after $MAX_WAIT seconds. Exiting."
+        echo "Scheduling file not found after $MAX_WAIT seconds. Exiting."
         exit 1
     fi
 
     sleep 5  # Check every 5 seconds
-    WAIT_TIME=$((WAIT_TIME + 5))  # ✅ Correct way to increment an integer
+    WAIT_TIME=$((WAIT_TIME + 5))  # Correct way to increment an integer
 done
 
 # Function to process the scheduling file
 process_file() {
-    echo "✅ Processing $SCHEDULE_FILE..."
+    echo "Processing $SCHEDULE_FILE..."
     
     while IFS=',' read -r job_id country segment execution_time; do
         # Skip empty lines
@@ -39,11 +39,11 @@ process_file() {
         # Add job details to CSV
         echo "$job_id,$country,$segment,$execution_time" >> "$CSV_FILE"
 
-        echo "📄 Created/Updated CSV: $CSV_FILE"
+        echo "Created/Updated CSV: $CSV_FILE"
     done < "$SCHEDULE_FILE"
 }
 
 # Process the scheduling file once available
 process_file
 
-echo "🎯 Job completed!"
+echo "Job completed!"

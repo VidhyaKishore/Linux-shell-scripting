@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Define the directory containing CSV files
+CSV_DIR="/path/to/FileReady"
+
+# Check if the directory exists
+if [ ! -d "$CSV_DIR" ]; then
+    echo "ERROR: Directory $CSV_DIR does not exist!"
+    exit 1  # Exit with error code 1
+fi
+
+# Flag to track if empty files are found
+EMPTY_FOUND=0  
+
+# Process CSV files using a wildcard
+for file in "$CSV_DIR"/*.csv; do
+    # Check if the file exists (wildcard may match nothing)
+    if [ ! -e "$file" ]; then
+        echo "No CSV files found in $CSV_DIR."
+        exit 2  # Exit with error code 2
+    fi
+
+    # Check if file size is 0 bytes
+    if [ ! -s "$file" ]; then
+        echo "WARNING: Found empty CSV file - $file"
+        EMPTY_FOUND=1  # Mark that an empty file is found
+        
+        # Use 'continue' to skip processing and move to the next file
+        continue
+    fi
+
+    # Processing the valid CSV file (Placeholder logic)
+    echo "Processing file: $file"
+    head -n 5 "$file"  # Display the first 5 lines
+
+    # If we encounter a valid CSV, break the loop (optional condition)
+    break
+done
+
+# If empty files were found, exit with a warning
+if [ "$EMPTY_FOUND" -eq 1 ]; then
+    echo "Exiting due to empty files found."
+    exit 3  # Exit with error code 3
+fi
+
+echo "Job Completed Successfully!"
+exit 0  # Exit with success status

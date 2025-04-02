@@ -1,0 +1,11 @@
+Best Practices in Shell Scripting
+✅ Use Meaningful Variable Names – Improves readability and maintainability.
+✅ Always Use Shebang (#!/bin/bash) – Ensures the script runs in the correct shell.
+✅ Add Comments (#) – Document your code for better understanding.
+✅ Use Quoting ("$var") – Prevents issues with spaces and special characters.
+✅ Check for Errors (set -e & || exit 1) – Stops execution on errors.
+✅ Validate User Input – Avoids unexpected failures.
+✅ Use Functions – Modularizes code for reusability.
+✅ Avoid Hardcoded Paths – Use variables or configuration files.
+✅ Optimize with sed & awk – Efficient text processing.
+✅ Schedule Tasks (cron or systemd) – Automate repetitive tasks.

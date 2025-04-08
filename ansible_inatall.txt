@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Set the repo ID and package name
+REPO_ID="ansible"
+PACKAGE_NAME="ansible"
+
+# Optional: Log file
+LOG_FILE="$HOME/ansible_install.log"
+
+echo "Starting Ansible install using repo: $REPO_ID" | tee -a "$LOG_FILE"
+
+# Step 1: Check if repo exists
+if yum repolist all | grep -q "\[$REPO_ID\]"; then
+    echo "Repo '$REPO_ID' found." | tee -a "$LOG_FILE"
+
+    # Step 2: Install ansible from the repo, even if disabled
+    sudo yum --disablerepo="*" --enablerepo="$REPO_ID" install -y "$PACKAGE_NAME" | tee -a "$LOG_FILE"
+
+    # Step 3: Check install result
+    if [ $? -eq 0 ]; then
+        echo "Ansible installed successfully." | tee -a "$LOG_FILE"
+    else
+        echo "Failed to install Ansible." | tee -a "$LOG_FILE"
+    fi
+else
+    echo "Repo '$REPO_ID' not found in yum repo list." | tee -a "$LOG_FILE"
+    exit 1
+fi

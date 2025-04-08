@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Set the path to the directory containing the RPM package
+PACKAGE_DIR="/home/user/my-rpms"
+PACKAGE_NAME="example-package.rpm"
+
+# Navigate to the directory
+cd "$PACKAGE_DIR" || { echo "Directory not found!"; exit 1; }
+
+# Install the package using yum
+sudo yum install -y "./$PACKAGE_NAME"
+
+# Check if the install was successful
+if [ $? -eq 0 ]; then
+    echo "Package '$PACKAGE_NAME' installed successfully."
+else
+    echo "Failed to install '$PACKAGE_NAME'."
+fi

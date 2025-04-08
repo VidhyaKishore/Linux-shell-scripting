@@ -1,0 +1,24 @@
+#!/bin/bash
+
+SOURCE_DIR="./"  # Change if needed
+EMPTY_DIR="./empty_files"
+NON_EMPTY_DIR="./non_empty_files"
+
+# Create destination directories if they don't exist
+mkdir -p "$EMPTY_DIR"
+mkdir -p "$NON_EMPTY_DIR"
+
+# Loop through files in the source directory
+for file in "$SOURCE_DIR"*; do
+    if [ -f "$file" ]; then
+        if [ ! -s "$file" ]; then
+            echo "Moving empty file: $file"
+            mv "$file" "$EMPTY_DIR/"
+        else
+            echo "Moving non-empty file: $file"
+            mv "$file" "$NON_EMPTY_DIR/"
+        fi
+    fi
+done
+
+echo "Sorting complete."

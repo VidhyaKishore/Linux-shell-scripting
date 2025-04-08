@@ -1,0 +1,17 @@
+#!/bin/bash
+
+PACKAGE="git"
+LOG_FILE="$HOME/git_install.log"
+
+echo "Installing '$PACKAGE'..." | tee "$LOG_FILE"
+
+# Step 1: Install the package
+sudo yum install -y "$PACKAGE" &>> "$LOG_FILE"
+
+# Step 2: Check the install status
+if rpm -q "$PACKAGE" &>/dev/null; then
+    echo "'$PACKAGE' installed successfully." | tee -a "$LOG_FILE"
+else
+    echo "Failed to install '$PACKAGE'. Check log: $LOG_FILE" | tee -a "$LOG_FILE"
+    exit 1
+fi

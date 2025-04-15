@@ -1,0 +1,9 @@
+{
+    "app": "{{APP_NAME}}",
+    "port": "{{PORT}}",
+    "database": {
+      "user": "{{DB_USER}}",
+      "password": "{{DB_PASS}}"
+    }
+  }
+  

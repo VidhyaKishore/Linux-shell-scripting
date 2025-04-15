@@ -1,0 +1,14 @@
+⚙️ Ansible vs Shell Script
+Feature	Ansible	Shell Script
+Purpose	Automation & configuration management	General scripting and automation
+Language	YAML (declarative)	Bash/sh (imperative)
+Ease of Use	Easier for repetitive tasks and orchestration	Simple for one-off tasks
+Idempotency	✔️ Yes (tasks run only if needed)	❌ No (runs every time)
+Error Handling	Built-in, structured	Manual, needs to be coded
+Scalability	Highly scalable (inventory-based)	Limited; manual effort for multi-host setups
+Modules	Rich set of pre-built modules	Manual scripting required
+Agent Required	❌ No (uses SSH)	❌ No (runs on the host directly)
+Use Case	Multi-server config, app deployment, infra	Small automations, quick tasks
+✅ Use Shell Scripts for quick and simple tasks
+✅ Use Ansible for structured, repeatable, and scalable automation across systems
+

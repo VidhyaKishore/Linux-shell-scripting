@@ -1,0 +1,18 @@
+🔧 Resources You'll Create:
+VPC – custom network
+
+Subnets – 2 public + 2 private (multi-AZ)
+
+Internet Gateway – for public access
+
+Route Tables
+
+Security Groups
+
+EC2 Launch Template – for ASG
+
+Auto Scaling Group (ASG) – manages EC2 instances
+
+Application Load Balancer (ALB) – distributes traffic
+
+User Data – installs a sample web app on instances

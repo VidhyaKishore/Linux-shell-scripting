@@ -1,0 +1,20 @@
+Assignment Tasks
+1. Provision EC2 Instances using Terraform
+•	Use Terraform to create an AWS EC2 instance Amazon Linux 2.
+•	Ensure security groups are configured to allow necessary ports (e.g., SSH: 22, App: 80/3000).
+2. Install Docker on the EC2 Instance
+•	Use Terraform user data to:
+o	Install Docker.
+o	Start the Docker service.
+o	Add the EC2 user to the Docker group (if applicable).
+3. Containerize a Sample Application
+•	Use a public Docker image or build your own (e.g., a simple Node.js, Python, or Nginx app). 
+•	Run the container using Docker and host the application Nginx Web Server. 
+•	Ensure the application is accessible via the public IP of the EC2 instance.
+4. Outputs
+Your Terraform script should output:
+•	Public IPs or DNS names of the running instances.
+5. Outputs
+Store Terraform state in remote backend using S3.
+________________________________________
+

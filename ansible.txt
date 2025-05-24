@@ -1,0 +1,25 @@
+---
+- name: Install and manage httpd on RedHat
+  hosts: webservers
+  become: yes  # Elevate to sudo
+  tasks:
+
+    - name: Install httpd package
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start httpd service
+      service:
+        name: httpd
+        state: started
+
+    - name: Enable httpd to start on boot
+      service:
+        name: httpd
+        enabled: yes
+
+    - name: Restart httpd service
+      service:
+        name: httpd
+        state: restarted

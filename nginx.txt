@@ -1,3 +1,45 @@
     - name: Comment out IPv6 listen line in nginx.conf
       shell: |
-        sed -i 's/^\s*listen\s*\[\:\:\]:80;/# &/' /etc/nginx/nginx.conf
+        sed -i 's/^\s*listen\s*\[\:\:\]:80;/# &/' /etc/nginx/nginx.conf---
+- hosts: scb
+  become: true
+  vars:
+    page_title: "My Landing Page"
+    page_description: "Sample page"
+  tasks:
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Apply page template
+      template:
+        src: templates/landing-page.html.j2
+        dest: /usr/share/nginx/html/index.html  # fixed path
+
+    - name: Disable IPv6 listen directive in all Nginx conf files
+      shell: |
+        grep -rl "\[::\]:80" /etc/nginx/ | xargs sed -i 's/^\s*listen \[::\]:80;/# &/'
+      args:
+        warn: false
+
+    - name: Ensure Nginx listens only on IPv4
+      lineinfile:
+        path: /etc/nginx/nginx.conf
+        regexp: '^\s*listen\s+.*80;'
+        line: '    listen 0.0.0.0:80;'
+
+    - name: Test Nginx configuration
+      shell: nginx -t
+      register: nginx_test
+      failed_when: "'successful' not in nginx_test.stdout"
+
+    - name: Enable the Nginx service
+      service:
+        name: nginx
+        enabled: yes
+
+    - name: Start the Nginx service
+      service:
+        name: nginx
+        state: started

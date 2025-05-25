@@ -1,0 +1,3 @@
+    - name: Comment out IPv6 listen line in nginx.conf
+      shell: |
+        sed -i 's/^\s*listen\s*\[\:\:\]:80;/# &/' /etc/nginx/nginx.conf

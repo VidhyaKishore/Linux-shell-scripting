@@ -1,0 +1,43 @@
+🔐 1. Vault
+Definition: The central service for managing secrets.
+
+In HCV: Vault is the core application that provides the interface and engine for storing, accessing, and managing sensitive data securely.
+
+🔑 2. Secrets
+Definition: Sensitive data managed by Vault.
+
+In HCV: These can be credentials, API keys, tokens, certificates, or even dynamic secrets like short-lived AWS credentials or database logins. Vault stores and manages these securely.
+
+🛡 3. Policies
+Definition: Rules that define who can access what in Vault.
+
+In HCV: Policies control access by mapping users or machines to specific permissions (e.g., read/write access to a secret path). They help implement least privilege access.
+
+🔐 4. Auth Methods
+Definition: Ways to authenticate to Vault.
+
+In HCV: Vault supports multiple auth methods such as:
+
+AppRole (used in automation)
+
+LDAP, GitHub, Okta (for human users)
+
+Kubernetes, AWS IAM, etc.
+These determine who you are before allowing access.
+
+⚙️ 5. Secret Engines
+Definition: Plugins for storing or generating secrets.
+
+In HCV: Each secret engine handles a specific type of secret, such as:
+
+kv for static key-value storage
+
+database for dynamic DB credentials
+
+aws for generating temporary AWS keys
+
+transit for encryption-as-a-service
+
+🧩 Summary
+In HashiCorp Vault, these five core concepts work together to provide a secure, flexible, and scalable secrets management system. Understanding these building blocks helps in securely managing secrets across various systems and environments.
+

@@ -1,0 +1,16 @@
+What Happens with Auto-Rotating Secrets?
+The latest secret (e.g., database password or API key) is automatically rotated (changed) on a schedule.
+
+When the first instance of the payments app starts, it pulls the latest secret.
+
+Other instances that start during the same rotation window use the same secret.
+
+So, multiple instances share the same secret version for that time period.
+
+🔹 Why Is This Useful?
+Reduces the number of secret requests (low latency).
+
+All instances stay in sync with the same valid credentials.
+
+If something fails during rotation (e.g., external provider down), existing secrets still work, so no app crashes.
+

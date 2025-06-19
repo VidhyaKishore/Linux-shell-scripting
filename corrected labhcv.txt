@@ -1,0 +1,23 @@
+import hvac  # pip install hvac
+
+# Vault configuration
+VAULT_ADDR = 'http://192.168.1.100:8200'  # Replace with your actual Vault IP
+VAULT_TOKEN = 'myroot'                   # Replace with your root or AppRole token
+
+# Connect to Vault
+client = hvac.Client(url=VAULT_ADDR, token=VAULT_TOKEN)
+
+# Confirm authenticated
+if not client.is_authenticated():
+    raise Exception("Vault authentication failed")
+
+# Read secret from KV v2 engine at path 'secret/data/myapp'
+read_response = client.secrets.kv.v2.read_secret_version(path='myapp')
+
+# Extract the secrets
+secrets = read_response['data']['data']
+username = secrets.get('username')
+password = secrets.get('password')
+
+# Simulate using the secrets
+print(f"✅ Connecting to DB with username: {username} and password: {password}")

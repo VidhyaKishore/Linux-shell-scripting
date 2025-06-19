@@ -1,0 +1,45 @@
+Lab 2: 
+We’ll create a sample Python app that:
+1.Stores a secret in Vault manually.
+2.Reads the secret from Vault at runtime to simulate using it (e.g., to connect to a DB).
+
+🔧 Step 1: Store a Secret in Vault (already done, but repeating for clarity)
+On your EC2 (inside Vault container or using the Vault CLI):
+# vault kv put secret/myapp username=admin password=12345
+
+💻 Step 2: Sample Python App to Read from Vault
+Create a file called app.py:
+import os
+import hvac  # pip install hvac
+
+# Vault configuration
+VAULT_ADDR = 'http://<your-ec2-public-ip>:8200'
+VAULT_TOKEN = 'myroot'
+SECRET_PATH = 'secret/data/myapp'
+
+# Connect to Vault
+client = hvac.Client(url=VAULT_ADDR, token=VAULT_TOKEN)
+
+# Read secret
+read_response = client.secrets.kv.v2.read_secret_version(path='myapp')
+secrets = read_response['data']['data']
+
+# Use the secret (simulate DB connection)
+username = secrets['username']
+password = secrets['password']
+
+print(f"Connecting to DB with username: {username} and password: {password}")
+✅ Replace <your-ec2-public-ip> with the actual IP
+# sudo yum install python3-pip -y
+# sudo yum install python3 -y
+📦 Step 3: Install hvac library
+On the EC2 or your local machine:
+# pip install hvac
+▶️ Step 4: Run the App
+# python3 app.py
+Expected output:
+Connecting to DB with username: admin and password: 12345
+✅ Summary
+✅ Vault stores the secrets
+✅ Your app securely pulls secrets at runtime
+✅ You don’t hardcode secrets into your app code or config files

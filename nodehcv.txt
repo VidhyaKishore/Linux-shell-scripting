@@ -93,3 +93,75 @@ async function fetchSecret() {
 }
 
 fetchSecret();
+----------------------------------------------------------------------
+// app.js
+import fetch from 'node-fetch';
+import pg from 'pg';
+
+const VAULT_ADDR = 'http://hcv:8200'; // Use the container name of Vault
+const VAULT_TOKEN = process.env.VAULT_TOKEN; // Pass via environment variable
+const VAULT_SECRET_PATH = '/v1/secret/data/database/postgres';
+
+async function fetchDbCredentials() {
+  const res = await fetch(`${VAULT_ADDR}${VAULT_SECRET_PATH}`, {
+    headers: {
+      'X-Vault-Token': VAULT_TOKEN
+    }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Vault fetch failed: ${res.status}`);
+  }
+
+  const secret = await res.json();
+  return secret.data.data;
+}
+
+async function connectToPostgres({ username, password }) {
+  const client = new pg.Client({
+    user: username,
+    password: password,
+    host: 'postgres',  // container name of your PostgreSQL instance
+    database: 'postgres',
+    port: 5432
+  });
+
+  await client.connect();
+  const result = await client.query('SELECT NOW()');
+  console.log('PostgreSQL time:', result.rows[0]);
+  await client.end();
+}
+
+(async () => {
+  try {
+    const creds = await fetchDbCredentials();
+    await connectToPostgres(creds);
+  } catch (err) {
+    console.error('Error:', err.message);
+  }
+})();
+
+# package.json
+
+{
+  "name": "vault-postgres-app",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "dependencies": {
+    "pg": "^8.11.3",
+    "node-fetch": "^3.3.2"
+  }
+}
+
+# Dockerfile
+FROM node:20
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY app.js ./
+
+CMD ["node", "app.js"]

@@ -165,3 +165,35 @@ RUN npm install
 COPY app.js ./
 
 CMD ["node", "app.js"]
+-------------------------------------------------------
+// app.js
+const VAULT_ADDR = 'http://hcv:8200'; // Vault container hostname (in net1)
+const VAULT_SECRET_PATH = '/v1/secret/data/database/postgres'; // KV v2 path
+const VAULT_TOKEN = process.env.VAULT_TOKEN; // Vault token from env
+
+async function fetchSecret() {
+  try {
+    const response = await fetch(`${VAULT_ADDR}${VAULT_SECRET_PATH}`, {
+      method: 'GET',
+      headers: {
+        'X-Vault-Token': VAULT_TOKEN
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Vault fetch failed: ${response.status} ${response.statusText}`);
+    }
+
+    const json = await response.json();
+    const data = json.data.data;
+
+    console.log('📦 Fetched secret from Vault:');
+    console.log('Username:', data.username);
+    console.log('Password:', data.password);
+
+  } catch (error) {
+    console.error('❌ Error fetching secret from Vault:', error.message);
+  }
+}
+
+fetchSecret();

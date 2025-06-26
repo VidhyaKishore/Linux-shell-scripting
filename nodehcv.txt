@@ -337,3 +337,100 @@ Error: Cannot find module '/defaultuser/app.js'
   }
 }
 
+emerg1@uklvadsb0291[DEV][~] $ sudo podman logs node-app
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   219    0   219    0     0   2281      0 --:--:-- --:--:-- --:--:--  2281
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1120    0  1120    0     0  11089      0 --:--:-- --:--:-- --:--:-- 11089
+Getting latest cert bundle: /com/scb/pki/icabundle/internalcacertsbundleall.002.crt
+Fetching certs from https://artifactory.global.standardchartered.com/artifactory/generic-production//com/scb/pki/icabundle/internalcacertsbundleall.002.crt if SCBINTERNALCACERT_URL not specified
+SCBINTERNALCACERT URL was not provided/empty, defaulting to fetch certs from original URL
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0200
+Replacing current certs with new certs
+100 74248  100 74248    0     0   589k      0 --:--:-- --:--:-- --:--:--  589k
+node:internal/modules/esm/resolve:873
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'axios' imported from /opt/app/application/app.js
+    at packageResolve (node:internal/modules/esm/resolve:873:9)
+    at moduleResolve (node:internal/modules/esm/resolve:946:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1188:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:642:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:591:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:574:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:236:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:130:49) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v20.19.2
+
+app.js
+------
+import axios from 'axios';
+import pg from 'pg';
+const { client } = pg;
+const express=require('express');
+const app=express();
+const VAULT_ADDR = process.env.VAULT_ADDR;  // replace with VM IP
+const VAULT_TOKEN = process.env.VAULT_TOKEN  // Replace with real token
+const SECRET_PATH = 'secret/data/database/postgres'; // Replace with right path where your secrets are saved // KV2 automatically adds data after secret
+const POSTGRES_HOST = 'postgres-db';
+const POSTGRES_DB = 'mydb';
+
+const port=8200;
+
+app.get('/user/:username',(req,res) => {
+  const username = req.params.username;
+  const response = {
+      message: `Hello, ${username}!`,
+      username: username
+    };
+  res.json(response);
+});
+
+// Step 1: Get secret from Vault
+axios.get(`${VAULT_ADDR}/v1/${SECRET_PATH}`, {
+  headers: { 'X-Vault-Token': VAULT_TOKEN }
+})
+.then(response => {
+  const { username, password } = response.data.data.data;
+
+  // Step 2: Connect to Postgres using credentials
+  const client = new Client({
+    user: username,
+    password: password,
+    host: POSTGRES_HOST,
+    database: POSTGRES_DB,
+    port: 5432,
+  });
+
+  client.connect()
+    .then(() => {
+      console.log('Connected to Postgres using Vault credentials');
+      return client.end();
+    })
+    .catch(err => {
+      console.error('DB connection error:', err.message);
+    });
+})
+
+.catch(err => {
+  if (err.response) {
+  console.error('Vault fetch error:, $(err.response.status} - ${JSON.stringify(err.response.data)}');
+  } else {
+  console.error('Error connecting to vault: $(err.message}');
+  }
+});
+
+app.listen(port,() => {
+    console.log(`server running at http://localhost:${port}`);
+    console.log(`vault request URL = ${VAULT_ADDR}/v1/${SECRET_PATH}`);
+    console.log(`VAULT_ADDR = ${VAULT_ADDR}`);
+    console.log(`VAULT_TOKEN = ${VAULT_TOKEN}`);
+});

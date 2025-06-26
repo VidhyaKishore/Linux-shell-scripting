@@ -746,4 +746,40 @@ app.listen(port,() => {
     console.log(`VAULT_ADDR = ${VAULT_ADDR}`);
     console.log(`VAULT_TOKEN = ${VAULT_TOKEN}`);
 });
-             
+----------------------------------------------------------------------
+
+CREATE TABLE employee (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  department TEXT NOT NULL
+);
+
+INSERT INTO employee (name, department) VALUES
+('Alice', 'Engineering'),
+('Bob', 'Finance'),
+('Charlie', 'HR');
+
+------------------------------------------
+SELECT * FROM employee;
+\q
+------------------------------------------
+
+client.connect()
+  .then(() => {
+    console.log(`✅ Connected to Postgres using Vault credentials`);
+
+    return client.query('SELECT * FROM employee');
+  })
+  .then(result => {
+    console.log('📄 Employee table contents:');
+    result.rows.forEach(row => {
+      console.log(row);
+    });
+  })
+  .catch(err => {
+    console.error(`❌ DB error: ${err.message}`);
+  })
+  .finally(() => {
+    client.end();
+  });
+

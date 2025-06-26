@@ -887,4 +887,118 @@ app.listen(cport,() => {
     console.log(`VAULT_TOKEN = ${VAULT_TOKEN}`);
 });
 
+========================================================================
+import express from 'express';
+import axios from 'axios';
+import pg from 'pg';
+const { Client } = pg;
+
+const app = express();
+const VAULT_ADDR = process.env.VAULT_ADDR;
+const VAULT_TOKEN = process.env.VAULT_TOKEN;
+const SECRET_PATH = 'secret/data/database/postgres';
+const POSTGRES_HOST = 'postgres-db';
+const POSTGRES_DB = 'mydb';
+
+const port = 8200;
+const cport = 3000;
+
+// Existing route: greeting by username
+app.get('/user/:username', (req, res) => {
+  const username = req.params.username;
+  const response = {
+    message: `Hello, ${username}!`,
+    username: username
+  };
+  res.json(response);
+});
+
+// New route: Get employee by ID
+app.get('/user/id/:empid', async (req, res) => {
+  const empid = parseInt(req.params.empid);
+  if (isNaN(empid)) {
+    return res.status(400).json({ error: "Invalid employee ID" });
+  }
+
+  try {
+    const vaultResponse = await axios.get(`${VAULT_ADDR}/v1/${SECRET_PATH}`, {
+      headers: { 'X-Vault-Token': VAULT_TOKEN }
+    });
+
+    const { username, password } = vaultResponse.data.data.data;
+
+    const client = new Client({
+      user: username,
+      password: password,
+      host: POSTGRES_HOST,
+      database: POSTGRES_DB,
+      port: 5432,
+    });
+
+    await client.connect();
+
+    const query = 'SELECT * FROM employee WHERE id = $1';
+    const result = await client.query(query, [empid]);
+
+    await client.end();
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Employee not found' });
+    }
+
+    res.json(result.rows[0]);
+
+  } catch (err) {
+    console.error('Error fetching employee by ID:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Initial DB connection (for logging purposes only)
+axios.get(`${VAULT_ADDR}/v1/${SECRET_PATH}`, {
+  headers: { 'X-Vault-Token': VAULT_TOKEN }
+})
+  .then(response => {
+    const { username, password } = response.data.data.data;
+
+    const client = new Client({
+      user: username,
+      password: password,
+      host: POSTGRES_HOST,
+      database: POSTGRES_DB,
+      port: 5432,
+    });
+
+    client.connect()
+      .then(() => {
+        console.log(`Connected to Postgres using Vault credentials`);
+        return client.query('SELECT * FROM employee');
+      })
+      .then(result => {
+        console.log('Employee table contents:');
+        result.rows.forEach(row => {
+          console.log(row);
+        });
+      })
+      .catch(err => {
+        console.error(`DB error: ${err.message}`);
+      })
+      .finally(() => {
+        client.end();
+      });
+  })
+  .catch(err => {
+    if (err.response) {
+      console.error(`Vault fetch error: ${err.response.status} - ${JSON.stringify(err.response.data)}`);
+    } else {
+      console.error(`Error connecting to vault: ${err.message}`);
+    }
+  });
+
+app.listen(cport, () => {
+  console.log(`server running at http://localhost:${cport}`);
+  console.log(`vault request URL = ${VAULT_ADDR}/v1/${SECRET_PATH}`);
+  console.log(`VAULT_ADDR = ${VAULT_ADDR}`);
+  console.log(`VAULT_TOKEN = ${VAULT_TOKEN}`);
+});
 

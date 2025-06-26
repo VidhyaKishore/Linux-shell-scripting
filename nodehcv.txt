@@ -434,3 +434,67 @@ app.listen(port,() => {
     console.log(`VAULT_ADDR = ${VAULT_ADDR}`);
     console.log(`VAULT_TOKEN = ${VAULT_TOKEN}`);
 });
+
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   219    0   219    0     0   2281      0 --:--:-- --:--:-- --:--:--  2281
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1120    0  1120    0     0  12043      0 --:--:-- --:--:-- --:--:-- 12043
+Getting latest cert bundle: /com/scb/pki/icabundle/internalcacertsbundleall.002.crt
+Fetching certs from https://artifactory.global.standardchartered.com/artifactory/generic-production//com/scb/pki/icabundle/internalcacertsbundleall.002.crt if SCBINTERNALCACERT_URL not specified
+SCBINTERNALCACERT URL was not provided/empty, defaulting to fetch certs from original URL
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0200
+Replacing current certs with new certs
+100 74248  100 74248    0     0   533k      0 --:--:-- --:--:-- --:--:--  533k
+file:///opt/app/application/app.js:4
+const express=require('express');
+              ^
+
+ReferenceError: require is not defined in ES module scope, you can use import instead
+    at file:///opt/app/application/app.js:4:15
+    at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+Node.js v20.19.2
+
+{
+  "name": "nn",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "express": "^4.21.0",
+    "pg": "^8.11.3",
+    "node-fetch": "^3.3.2"
+  }
+}
+
+FROM cache.artifactory.global.standardchartered.com/gv-images-products/scb-bases/gts-1114/node-builder:20.19.1-micro-6314908 as builder
+COPY --chown=$USER package.json /opt/app/application/
+WORKDIR /opt/app/application
+RUN npm install
+RUN ls -1
+
+FROM artifactory.global.standardchartered.com/gv-images-products/scb-bases/gts-1114/node:20.19.1-micro-6679849
+# copy installed dependencies from the previous image
+COPY --from=builder --chown=$USER /opt/app/application/node_modules /opt/app/application/node_modules
+# copy in your script(s)
+COPY --chown=$USER app.js /opt/app/application/
+
+EXPOSE 3000
+# by default in base image, container starts with "node server.js", replace "server.js" with your file name
+RUN sed -i 's\server.js\app.js\g' /opt/app/run.sh
+

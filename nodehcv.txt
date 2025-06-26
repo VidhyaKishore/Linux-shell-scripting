@@ -197,3 +197,108 @@ async function fetchSecret() {
 }
 
 fetchSecret();
+
+----------------------------------------------------------
+Dockerfile
+----------
+
+FROM cache.artifactory.global.standardchartered.com/gv-images-products/scb-bases/gts-1114/node-builder:20.19.1-micro-6314908 as builder
+COPY --chown=$USER package.json /opt/app/application/
+WORKDIR /opt/app/application
+RUN npm install
+RUN ls -1
+
+FROM artifactory.global.standardchartered.com/gv-images-products/scb-bases/gts-1114/node:20.19.1-micro-6679849
+# copy installed dependencies from the previous image
+COPY --from=builder --chown=$USER /opt/app/application/node_modules /opt/app/application/node_modules
+# copy in your script(s)
+COPY --chown=$USER app.js /opt/app/application/
+
+EXPOSE 3000
+# by default in base image, container starts with "node server.js", replace "server.js" with your file name
+RUN sed -i 's\server.js\app.js\g' /opt/app/run.sh
+CMD ["node", "app.js"]
+
+Package.json
+------------
+
+{
+  "name": "vault-postgres-app",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "dependencies": {
+    "pg": "^8.11.3",
+    "node-fetch": "^3.3.2"
+  }
+}
+
+
+app.js
+------
+import axios from 'axios';
+import pg from 'pg';
+const { client } = pg;
+// const axios = require('axios');
+// const { Client } = require('pg');
+
+// Vault & Postgres config
+const VAULT_ADDR = process.env.VAULT_ADDR;  // replace with VM IP
+const VAULT_TOKEN = process.env.VAULT_TOKEN  // Replace with real token
+const SECRET_PATH = 'secret/data/database/postgres'; // Replace with right path where your secrets are saved // KV2 automatically adds data after secret
+const POSTGRES_HOST = 'postgres-db';
+const POSTGRES_DB = 'mydb';
+
+//const secretPath = 'secret/data/database/postgres';
+console.log("vault request URL =", '${process.env.VAULT_ADDR}/v1/${SECRET_PATH}');
+// console.log('Fetching from Vault:', '${VAULT_ADDR}/v1/${SECRET_PATH}');
+
+// Step 1: Get secret from Vault
+axios.get(`${VAULT_ADDR}/v1/${SECRET_PATH}`, {
+  headers: { 'X-Vault-Token': VAULT_TOKEN }
+})
+.then(response => {
+  const { username, password } = response.data.data.data;
+
+  // Step 2: Connect to Postgres using credentials
+  const client = new Client({
+    user: username,
+    password: password,
+    host: POSTGRES_HOST,
+    database: POSTGRES_DB,
+    port: 5432,
+  });
+
+  client.connect()
+    .then(() => {
+      console.log('✅ Connected to Postgres using Vault credentials');
+      return client.end();
+    })
+    .catch(err => {
+      console.error('❌ DB connection error:', err.message);
+    });
+
+})
+emerg1@uklvadsb0291[DEV][~] $ sudo podman logs node-app
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   219    0   219    0     0   2517      0 --:--:-- --:--:-- --:--:--  2517
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1120    0  1120    0     0   9491      0 --:--:-- --:--:-- --:--:--  9491
+Getting latest cert bundle: /com/scb/pki/icabundle/internalcacertsbundleall.002.crt
+Fetching certs from https://artifactory.global.standardchartered.com/artifactory/generic-production//com/scb/pki/icabundle/internalcacertsbundleall.002.crt if SCBINTERNALCACERT_URL not specified
+SCBINTERNALCACERT URL was not provided/empty, defaulting to fetch certs from original URL
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0200
+Replacing current certs with new certs
+100 74248  100 74248    0     0   609k      0 --:--:-- --:--:-- --:--:--  604k
+❌ Vault fetch error: Request failed with status code 403
+
+CONTAINER ID  IMAGE                                                            COMMAND          CREATED         STATUS                   PORTS                   NAMES
+7229313002cf  artifactory.global.standardchartered.com/hashicorp/vault:latest  server -dev      41 hours ago    Up 41 hours              0.0.0.0:8200->8200/tcp  hcv
+d730008d0082  artifactory.global.standardchartered.com/postgres:12             postgres         41 hours ago    Up 41 hours              0.0.0.0:5432->5432/tcp  postgres-db
+faeaf08bf99c  localhost/node-vault-app:latest                                  /opt/app/run.sh  40 hours ago    Exited (0) 40 hours ago  0.0.0.0:3000->3000/tcp  node-app
+4ba3a0ff3b93  artifactory.global.standardchartered.com/ubuntu:latest           bash             20 minutes ago  Up 20 minutes                                    ubuntu
+

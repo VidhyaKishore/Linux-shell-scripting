@@ -653,3 +653,12 @@ VAULT_ADDR = http://10.198.52.47:8200
 VAULT_TOKEN = hvs.xxxx
 Error connecting to vault: $(err.message}
 
+.catch(err => {
+  if (err.response) {
+    console.error(`Vault fetch error: ${err.response.status} - ${JSON.stringify(err.response.data)}`);
+  } else {
+    console.error(`Error connecting to vault: ${err.message}`);
+  }
+});
+
+

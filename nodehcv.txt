@@ -682,3 +682,68 @@ VAULT_ADDR = http://10.198.52.47:8200
 VAULT_TOKEN = hvs.XXXX
 Error connecting to vault: Client is not defined
 
+
+import express from 'express';
+import axios from 'axios';
+import pg from 'pg';
+const { Client } = pg;
+//const express=require('express');
+const app=express();
+const VAULT_ADDR = process.env.VAULT_ADDR;  // replace with VM IP
+const VAULT_TOKEN = process.env.VAULT_TOKEN  // Replace with real token
+const SECRET_PATH = 'secret/data/database/postgres'; // Replace with right path where your secrets are saved // KV2 automatically adds data after secret
+const POSTGRES_HOST = 'postgres-db';
+const POSTGRES_DB = 'mydb';
+
+const port=8200;
+
+app.get('/user/:username',(req,res) => {
+  const username = req.params.username;
+  const response = {
+      message: `Hello, ${username}!`,
+      username: username
+    };
+  res.json(response);
+});
+
+// Step 1: Get secret from Vault
+axios.get(`${VAULT_ADDR}/v1/${SECRET_PATH}`, {
+  headers: { 'X-Vault-Token': VAULT_TOKEN }
+})
+.then(response => {
+  const { username, password } = response.data.data.data;
+
+  // Step 2: Connect to Postgres using credentials
+  const client = new Client({
+    user: username,
+    password: password,
+    host: POSTGRES_HOST,
+    database: POSTGRES_DB,
+    port: 5432,
+  });
+
+  client.connect()
+    .then(() => {
+      console.log(`Connected to Postgres using Vault credentials`);
+      return client.end();
+    })
+    .catch(err => {
+      console.error(`DB connection error:`, err.message);
+    });
+})
+
+.catch(err => {
+  if (err.response) {
+    console.error(`Vault fetch error: ${err.response.status} - ${JSON.stringify(err.response.data)}`);
+  } else {
+    console.error(`Error connecting to vault: ${err.message}`);
+  }
+});
+
+app.listen(port,() => {
+    console.log(`server running at http://localhost:${port}`);
+    console.log(`vault request URL = ${VAULT_ADDR}/v1/${SECRET_PATH}`);
+    console.log(`VAULT_ADDR = ${VAULT_ADDR}`);
+    console.log(`VAULT_TOKEN = ${VAULT_TOKEN}`);
+});
+             

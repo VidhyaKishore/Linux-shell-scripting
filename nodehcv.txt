@@ -498,3 +498,32 @@ EXPOSE 3000
 # by default in base image, container starts with "node server.js", replace "server.js" with your file name
 RUN sed -i 's\server.js\app.js\g' /opt/app/run.sh
 
+
+emerg1@uklvadsb0291[DEV][~] $ sudo podman logs node-app
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   219    0   219    0     0   1938      0 --:--:-- --:--:-- --:--:--  1938
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1120    0  1120    0     0  11313      0 --:--:-- --:--:-- --:--:-- 11313
+Getting latest cert bundle: /com/scb/pki/icabundle/internalcacertsbundleall.002.crt
+Fetching certs from https://artifactory.global.standardchartered.com/artifactory/generic-production//com/scb/pki/icabundle/internalcacertsbundleall.002.crt if SCBINTERNALCACERT_URL not specified
+SCBINTERNALCACERT URL was not provided/empty, defaulting to fetch certs from original URL
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0200
+100 74248  100 74248    0     0   647k      0 --:--:-- --:--:-- --:--:--  647k
+Replacing current certs with new certs
+file:///opt/app/application/app.js:5
+const express=require('express');
+      ^
+
+SyntaxError: Identifier 'express' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:340:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:146:18)
+    at #translate (node:internal/modules/esm/loader:431:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:478:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:110:19)
+
+Node.js v20.19.2
+

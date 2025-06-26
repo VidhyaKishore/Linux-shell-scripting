@@ -661,4 +661,24 @@ Error connecting to vault: $(err.message}
   }
 });
 
+emerg1@uklvadsb0291[DEV][~] $ sudo podman logs node-app
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   219    0   219    0     0   2433      0 --:--:-- --:--:-- --:--:--  2433
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1120    0  1120    0     0  14358      0 --:--:-- --:--:-- --:--:-- 14358
+Getting latest cert bundle: /com/scb/pki/icabundle/internalcacertsbundleall.002.crt
+Fetching certs from https://artifactory.global.standardchartered.com/artifactory/generic-production//com/scb/pki/icabundle/internalcacertsbundleall.002.crt if SCBINTERNALCACERT_URL not specified
+SCBINTERNALCACERT URL was not provided/empty, defaulting to fetch certs from original URL
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0200
+Replacing current certs with new certs
+100 74248  100 74248    0     0   589k      0 --:--:-- --:--:-- --:--:--  589k
+server running at http://localhost:8200
+vault request URL = http://10.198.52.47:8200/v1/secret/data/database/postgres
+VAULT_ADDR = http://10.198.52.47:8200
+VAULT_TOKEN = hvs.XXXX
+Error connecting to vault: Client is not defined
 

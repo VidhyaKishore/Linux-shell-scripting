@@ -815,3 +815,8 @@ echo "<h1>Hello World from Azure Virtual Machine</h1>" | sudo tee /var/www/html/
 check the result : http://<pub-ip>:80
 
 
+Notes: 
+custom_data = base64encode(file("userdata.sh"))
+If you want to avoid using base64encode() and just use the file() function directly, it won’t work with Azure unless the content is already Base64-encoded. That’s because:
+
+🔹 Azure requires the custom_data field to be base64-encoded, according to its API specs.

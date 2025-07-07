@@ -1,0 +1,583 @@
+Assignment 1
+------------
+
+Variable.tf
+-----------
+
+variable "azure_subscription_id" {
+  type        = string
+  description = "Azure Subscription ID"
+}
+variable "azure_client_id" {
+  type        = string
+  description = "Azure Client ID"
+}
+variable "azure_client_secret" {
+  type        = string
+  description = "Azure Client Secret"
+}
+variable "azure_tenant_id" {
+  type        = string
+  description = "Azure Tenant ID"
+}
+
+variable "location" {
+  default = "East US"
+}
+variable "app_name" {
+  default = "jul"
+}
+
+terraform.tfvars
+----------------
+
+azure_subscription_id = "xxx"
+azure_client_id       = "xxx"
+azure_client_secret   = "xxx"
+azure_tenant_id       = "xxx"
+
+provider.tf
+-----------
+provider "azurerm" {
+  features {}
+  subscription_id = var.azure_subscription_id
+  client_id       = var.azure_client_id
+  client_secret   = var.azure_client_secret
+  tenant_id       = var.azure_tenant_id
+}
+
+resource "azurerm_resource_group" "network-rg" {
+  name     = "${var.app_name}_rg"
+  location = var.location
+  tags = {
+    application = var.app_name
+  }
+}
+
+----------------------------------------------
+Assignment 2: 
+
+var.tf
+------
+variable "azure_subscription_id" {
+  type        = string
+  description = "azure_subscription_id"
+}
+
+variable "azure_client_id" {
+  type        = string
+  description = "azure_client_id"
+}
+
+variable "azure_client_secret" {
+  type        = string
+  description = "azure_client_secret"
+}
+
+variable "azure_tenant_id" {
+  type        = string
+  description = "azure_tenant_id"
+}
+
+variable "location" {
+  default = "East US"
+}
+
+variable "rg" {
+  type        = string
+  description = "Resource group name"
+  default     = "vid-RG"
+}
+
+variable "vnet_name" {
+  default = "vm-vnet"
+}
+
+variable "vnet_cidr" {
+  default = ["10.0.0.0/16"]
+}
+
+variable "subnet_name" {
+  default = "vm-subnet"
+}
+
+variable "subnet_cidr" {
+  default = ["10.0.1.0/24"]
+}
+
+variable "nsg_name" {
+  default = "vm_nsg"
+}
+
+variable "vm_name" {
+  default = "ubuntu-web-vm"
+}
+
+variable "vm_size" {
+  default = "Standard_B1s"
+}
+
+variable "admin_username" {
+  default = "azureuser"
+}
+
+variable "admin_password" {
+  default   = "Axess@102938"
+  sensitive = true
+}
+
+variable "public_ip_name" {
+  default = "vm-public-ip"
+}
+
+variable "nic_name" {
+  default = "vm-nic"
+}
+
+terraform.tfvars
+----------------
+azure_subscription_id = "xxx"
+azure_client_id       = "xxx"
+azure_client_secret   = "xxx"
+azure_tenant_id       = "xxx"
+
+provider.tf
+-----------
+provider "azurerm" {
+  features {}
+  subscription_id = var.azure_subscription_id
+  client_id       = var.azure_client_id
+  client_secret   = var.azure_client_secret
+  tenant_id       = var.azure_tenant_id
+}
+
+resource "azurerm_resource_group" "network-rg" {
+  name     = var.rg
+  location = var.location
+}
+
+resource "azurerm_virtual_network" "vnet" {
+  name                = var.vnet_name
+  address_space       = var.vnet_cidr
+  location            = azurerm_resource_group.network-rg.location
+  resource_group_name = azurerm_resource_group.network-rg.name
+}
+
+resource "azurerm_subnet" "vid-subnet1" {
+  name                 = var.subnet_name
+  resource_group_name  = azurerm_resource_group.network-rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.subnet_cidr
+}
+
+resource "azurerm_network_security_group" "vid-nsg" {
+  name                = var.nsg_name
+  location            = azurerm_resource_group.network-rg.location
+  resource_group_name = azurerm_resource_group.network-rg.name
+
+  security_rule {
+    name                       = "allow-ssh"
+    description                = "allow-ssh"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "Internet"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "allow-http"
+    description                = "allow-http"
+    priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "Internet"
+    destination_address_prefix = "*"
+  }
+}
+
+resource "azurerm_subnet_network_security_group_association" "subnet_nsg" {
+  subnet_id                 = azurerm_subnet.vid-subnet1.id
+  network_security_group_id = azurerm_network_security_group.vid-nsg.id
+}
+
+resource "azurerm_public_ip" "pub_ip" {
+  name                = var.public_ip_name
+  location            = azurerm_resource_group.network-rg.location
+  resource_group_name = azurerm_resource_group.network-rg.name
+  allocation_method   = "Static"
+}
+
+resource "azurerm_network_interface" "nic" {
+  name                = var.nic_name
+  location            = azurerm_resource_group.network-rg.location
+  resource_group_name = azurerm_resource_group.network-rg.name
+
+  ip_configuration {
+    name                          = "ipconfig1"
+    subnet_id                     = azurerm_subnet.vid-subnet1.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.pub_ip.id
+  }
+}
+
+resource "azurerm_linux_virtual_machine" "vm" {
+  name                  = var.vm_name
+  location              = azurerm_resource_group.network-rg.location
+  resource_group_name   = azurerm_resource_group.network-rg.name
+  network_interface_ids = [azurerm_network_interface.nic.id]
+  size                  = var.vm_size
+
+  admin_username                  = var.admin_username
+  admin_password                  = var.admin_password
+  disable_password_authentication = false
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-focal"
+    sku       = "20_04-lts"
+    version   = "latest"
+  }
+ custom_data = base64encode(file("userdata.sh"))
+}
+
+output "pub_ip_output" {
+  value = azurerm_public_ip.pub_ip.ip_address
+}
+
+userdata.sh
+-----------
+#!/bin/bash
+sudo apt-get update
+sudo apt-get install -y apache2
+sudo systemctl start apache2
+sudo systemctl enable apache2
+echo "<h1>Hello Welcome to terraform session</h1>" | sudo tee /var/www/html/index.html
+
+
+==================================================================
+Assignment 4: 
+
+var.tf
+------
+
+variable "azure_subscription_id" {
+  type        = string
+  description = "azure_subscription_id"
+}
+
+variable "azure_client_id" {
+  type        = string
+  description = "azure_client_id"
+}
+
+variable "azure_client_secret" {
+  type        = string
+  description = "azure_client_secret"
+}
+
+variable "azure_tenant_id" {
+  type        = string
+  description = "azure_tenant_id"
+}
+
+variable "location" {
+  default = "East US"
+}
+
+variable "network_address_space" {
+  type = map(string)
+}
+
+variable "subnet_count" {
+  type = map(number)
+}
+
+locals {
+  env_name = lower(terraform.workspace)
+  common_tags = {
+    Environment = local.env_name
+  }
+}
+
+terraform.tfvars
+----------------
+
+azure_subscription_id = "xxx"
+azure_client_id       = "xxx"
+azure_client_secret   = "xxx"
+azure_tenant_id       = "xxx"
+
+network_address_space = {
+  development = "10.0.0.0/16"
+  uat         = "10.1.0.0/16"
+}
+
+subnet_count = {
+  development = 1
+  uat         = 2
+}
+
+provider.tf
+-----------
+provider "azurerm" {
+  features {}
+  subscription_id = var.azure_subscription_id
+  client_id       = var.azure_client_id
+  client_secret   = var.azure_client_secret
+  tenant_id       = var.azure_tenant_id
+}
+
+resource "azurerm_resource_group" "network-rg" {
+  name     = "${local.env_name}-rg"
+  location = var.location
+}
+
+# VNET
+
+resource "azurerm_virtual_network" "vnet" {
+  name                = "${local.env_name}-vnet"
+  address_space       = [var.network_address_space[terraform.workspace]]
+  location            = var.location
+  resource_group_name = azurerm_resource_group.network-rg.name
+
+  tags = merge(local.common_tags, { Name = "${local.env_name}-vnet" })
+}
+
+# SUBNETS
+
+resource "azurerm_subnet" "subnet" {
+  count = var.subnet_count[terraform.workspace]
+
+  name                 = "${local.env_name}-subnet${count.index + 1}"
+  resource_group_name  = azurerm_resource_group.network-rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = [cidrsubnet(var.network_address_space[terraform.workspace], 8, count.index)]
+
+  depends_on = [azurerm_virtual_network.vnet]
+}
+
+# PUBLIC IP
+
+resource "azurerm_public_ip" "public_ip" {
+  name                = "${local.env_name}-pip"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.network-rg.name
+  allocation_method   = "Static"     
+  sku                 = "Standard"   
+
+  tags = merge(local.common_tags, { Name = "${local.env_name}-pip" })
+}
+
+-------------------------------------------------------------------------
+Inside Module folder:
+----------------------
+Main.tf
+-------
+# VARIABLES
+variable "vm_name" {
+  type = string
+}
+variable "location" {
+  type = string
+}
+variable "resource_group_name" {
+  type = string
+}
+variable "subnet_id" {
+  type = string
+}
+variable "nsg_id" {
+  type = string
+}
+variable "admin_username" {
+  type = string
+}
+variable "admin_password" {
+  type = string
+}
+variable "custom_data" {
+  type = string
+}
+
+# NETWORK INTERFACE
+resource "azurerm_network_interface" "nic" {
+  name                = "${var.vm_name}-nic"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = var.subnet_id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.pip.id  # Attach the public IP here
+  }
+}
+
+
+# NIC <-> NSG Association (fixes your red line)
+resource "azurerm_network_interface_security_group_association" "nic_nsg_assoc" {
+  network_interface_id      = azurerm_network_interface.nic.id
+  network_security_group_id = var.nsg_id
+}
+
+resource "azurerm_public_ip" "pip" {
+  name                = "${var.vm_name}-pip"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Basic" # or "Standard" if required
+}
+
+# VIRTUAL MACHINE
+resource "azurerm_linux_virtual_machine" "vm" {
+  name                  = var.vm_name
+  location              = var.location
+  resource_group_name   = var.resource_group_name
+  size                  = "Standard_B1s"
+  admin_username        = var.admin_username
+  admin_password        = var.admin_password
+  disable_password_authentication = false
+  network_interface_ids = [azurerm_network_interface.nic.id]
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-focal"
+    sku       = "20_04-lts"
+    version   = "latest"
+  }
+
+  custom_data = var.custom_data
+}
+
+# OUTPUT
+output "vm_public_ip" {
+  value = azurerm_public_ip.pip.ip_address
+}
+
+Outside modules
+---------------
+var.tf
+------
+variable "azure_subscription_id" {
+  type        = string
+  description = "azure_subscription_id"
+}
+
+variable "azure_client_id" {
+  type        = string
+  description = "azure_client_id"
+}
+
+variable "azure_client_secret" {
+  type        = string
+  description = "azure_client_secret"
+}
+
+variable "azure_tenant_id" {
+  type        = string
+  description = "azure_tenant_id"
+}
+
+variable "location" {
+  default = "East US"
+}
+
+variable "rg" {
+  type        = string
+  description = "Resource group name"
+  default     = "vid-RG"
+}
+
+terraform.tfvars
+----------------
+azure_subscription_id = "xxx"
+azure_client_id       = "xxx"
+azure_client_secret   = "xxx"
+azure_tenant_id       = "xxx"
+
+provider.tf
+-----------
+
+provider "azurerm" {
+  features {}
+  subscription_id = var.azure_subscription_id
+  client_id       = var.azure_client_id
+  client_secret   = var.azure_client_secret
+  tenant_id       = var.azure_tenant_id
+}
+
+resource "azurerm_resource_group" "network-rg" {
+  name     = var.rg
+  location = var.location
+}
+
+resource "azurerm_virtual_network" "vnet" {
+  name                = "demo-vnet"
+  address_space       = ["10.0.0.0/16"]
+  location            = var.location
+  resource_group_name = azurerm_resource_group.network-rg.name
+}
+
+resource "azurerm_subnet" "subnet" {
+  name                 = "demo-subnet"
+  resource_group_name  = azurerm_resource_group.network-rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+resource "azurerm_network_security_group" "nsg" {
+  name                = "demo-nsg"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.network-rg.name
+  security_rule {
+    name                       = "Allow-HTTP"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
+resource "azurerm_subnet_network_security_group_association" "subnet_nsg" {
+  subnet_id                 = azurerm_subnet.subnet.id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
+
+module "vm_module" {
+  source              = "./modules"
+  vm_name             = "demo-vm"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.network-rg.name
+  subnet_id           = azurerm_subnet.subnet.id
+  nsg_id              = azurerm_network_security_group.nsg.id
+  admin_username      = "azureuser"
+  admin_password      = "P@ssword1234!"
+  custom_data         = base64encode(file("userdata.sh"))
+}
+
+output "vm_ip" {
+  value = module.vm_module.vm_public_ip
+}  
+
+

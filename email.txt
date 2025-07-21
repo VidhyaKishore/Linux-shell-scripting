@@ -1,3 +1,9 @@
-Hi, 
+Hi,
 
-You’re receiving this invite delay because there is a small error that happened in saba. As per the process the registration and approval window closes 7 days before the session and we will roll out the invite. In saba the non-approved participants will be automatically dropped but this didn’t happen in our case. Some of you reached out to me for the session invite. Kindly check the trail mail for the same and also be ready with the prerequisite. 
+You're receiving this message due to a minor issue that occurred in Saba. As per the standard process, the registration and approval window closes 7 days before the session, after which invites are sent out. At that point, participants who have not been approved are automatically dropped from the system.
+
+However, due to a glitch, this automatic removal did not happen, which caused a delay in sending the invites. Some of you have reached out to me regarding the session invite — please refer to the email trail for the details.
+
+Kindly ensure you are ready with the required prerequisites before the session.
+
+Thank you for your understanding and cooperation.

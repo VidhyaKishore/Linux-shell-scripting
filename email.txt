@@ -14,4 +14,7 @@ Cloud Integration – AWS Secret Manager and Azure Key Vault Integration
 Automatic rotation – Managed and Non-Managed Accounts
  
 Q&A
+
+
+The session was both insightful and engaging, with over 50 technologists actively participating. It covered essential aspects of secrets management at SCB, including secure storage, access control, and integration with cloud platforms like AWS. A key highlight was the demonstration of auto secret rotation on the AWS platform, which reinforced the importance of safeguarding sensitive credentials such as tokens, passwords, and API keys.
  

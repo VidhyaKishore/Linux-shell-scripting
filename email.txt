@@ -1,8 +1,9 @@
-$ git add topguns-bank
-fatal: Unable to create 'C:/Users/2031059/Downloads/Ayushman/99999-appr-milam-repo/.git/index.lock': File exists.
+$ git commit -m "assignment-2"
+On branch 2031059-AyushmanSingh
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+  (commit or discard the untracked or modified content in submodules)
+        modified:   topguns-bank (modified content, untracked content)
  
-Another git process seems to be running in this repository, e.g.
-an editor opened by 'git commit'. Please make sure all processes
-are terminated then try again. If it still fails, a git process
-may have crashed in this repository earlier:
-remove the file manually to continue.
+no changes added to commit (use "git add" and/or "git commit -a")

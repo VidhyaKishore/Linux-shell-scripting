@@ -1,9 +1,8 @@
-$ git commit -m "assignment-2"
-On branch 2031059-AyushmanSingh
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-  (commit or discard the untracked or modified content in submodules)
-        modified:   topguns-bank (modified content, untracked content)
- 
-no changes added to commit (use "git add" and/or "git commit -a")
+$ git -c http.sslVerify=false clone https://sc-ado-academy@dev.azure.com/sc-ado-academy/Apprenticeship-Foundation/_git/99999-appr-milam-repo
+Cloning into '99999-appr-milam-repo'...
+remote: Azure Repos
+remote: Found 31839 objects to send. (85 ms)
+error: RPC failed; curl 56 OpenSSL SSL_read: Connection was reset, errno 10054
+fetch-pack: unexpected disconnect while reading sideband packet
+fatal: early EOF
+fatal: fetch-pack: invalid index-pack output

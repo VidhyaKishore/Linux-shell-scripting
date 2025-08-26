@@ -1,38 +1,148 @@
+👩‍🏫 Introduction
 Hello everyone!
-In this session, I’m going to show you how to configure Git with your username and email ID.
-These settings are very important because Git uses them to record who makes changes in a project.
-Without this information, your commits will not have proper ownership.
-	Open your git bash.
-	Now, let’s configure the username. 
-Type the following command - git config --global user.name "Your Name"
-	Next, we need to configure the email address.
-Type the following command - git config --global user.email your-email@example.com
-	To make sure Git saved your details, run: git config --list
-You’ll see your username and email listed in the output.
-	By default, we used the --global option.
-This means your username and email are applied to all repositories on your system.
-If you want different credentials for a specific project only, you can remove --global and run the same commands inside that project folder.
+In this session, I’m going to walk you through some of the most important Git configurations you’ll need when working in different environments.
 
-So in this video, we learned how to 
-1.	Configured global username and email.
-2.	Verified the settings.
-3.	Learned the difference between global and local configurations.
+We’ll cover:
 
-By default, Git always verifies the SSL certificate of the remote server whenever we perform operations like clone, fetch, or push.
+Configuring your Git username and email.
 
-This verification is important because it ensures we’re connecting to a trusted and secure server.
-However, in some environments — for example in the training and learning environment — we may not always have a valid SSL certificate.
+Handling SSL certificate issues.
 
-In such cases, Git may throw errors related to SSL verification, and this can prevent us from cloning or pushing code.
+Setting up a proxy for corporate networks.
 
-Instead of typing this option every time: git -c http.sslVerify=false clone <repo-url>
+Creating a Personal Access Token, or PAT.
 
-We can configure it once, so Git remembers it. git config --global http.sslVerify false
-This tells Git to skip SSL certificate verification for all repositories on the system for the current user.
-To confirm the change, run: git config --list --show-origin
+Finally, using these settings to clone a repository.
 
-Keep in mind, disabling SSL verification is not recommended in production or on public networks.
+📝 Step 1 – Configure Username and Email
 
-Skipping certificate checks can expose us to security risks such as man-in-the-middle attacks.
+These settings are very important because Git uses them to record who makes changes in a project. Without this, your commits won’t have proper ownership.
 
-But in a learning environment or training setup, where the network is controlled, this method is acceptable as a quick workaround.
+👉 Open your Git Bash and type:
+
+git config --global user.name "Your Name"
+git config --global user.email "your-email@example.com"
+
+
+Now, verify the settings with:
+
+git config --list
+
+
+You should see your username and email in the output.
+
+By default, we used the --global option.
+This means your name and email are applied to all repositories on your system.
+
+If you want different credentials for a specific project only, remove --global and run the same commands inside that project folder.
+
+🔒 Step 2 – SSL Verification in Git
+
+By default, Git always verifies the SSL certificate of the remote server when you run commands like clone, fetch, or push.
+
+This ensures you’re connecting to a secure server.
+
+However, in training or lab environments, valid SSL certificates may not always be available.
+In such cases, Git may throw SSL errors and prevent you from cloning or pushing code.
+
+Instead of typing this every time:
+
+git -c http.sslVerify=false clone <repo-url>
+
+
+We can configure it once globally:
+
+git config --global http.sslVerify false
+
+
+To confirm:
+
+git config --list --show-origin
+
+
+⚠️ Important: Disabling SSL verification is not recommended in production, since it exposes you to security risks.
+But in a controlled training setup, this is acceptable as a quick workaround.
+
+🌐 Step 3 – Proxy Setup in Corporate Networks
+
+Sometimes, when connected to a VPN or inside a corporate network, Git commands may fail because all traffic goes through a proxy server.
+
+To make Git work properly, configure the proxy:
+
+git config --global http.proxy http://proxy.company.com:8080
+git config --global https.proxy http://proxy.company.com:8080
+
+
+If authentication is required:
+
+git config --global http.proxy http://username:password@proxy.company.com:8080
+git config --global https.proxy http://username:password@proxy.company.com:8080
+
+
+Verify with:
+
+git config --list
+
+
+And if you later don’t need the proxy:
+
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+
+🔑 Step 4 – Personal Access Token (PAT)
+
+When we work with Git over HTTPS, we often need authentication.
+Most platforms like GitHub, Azure DevOps, and GitLab no longer allow passwords — instead, they require a Personal Access Token (PAT).
+
+A PAT acts like a password but is more secure because it can be scoped and time-limited.
+
+👉 To create a PAT:
+
+Log in to your Git platform (e.g., Azure DevOps or GitHub).
+
+Go to User Settings → Personal Access Tokens.
+
+Click New Token.
+
+Give it a name, set an expiration date, and select the required scopes.
+
+Create and copy the token. Remember, you’ll only see it once.
+
+⚠️ Treat your PAT like a password:
+
+Never share it.
+
+Never commit it to code.
+
+Revoke it immediately if exposed.
+
+📥 Step 5 – Clone a Repository with PAT
+
+Now let’s put it all together.
+
+When you run:
+
+git clone https://github.com/username/repository.git
+
+
+Git will ask for your username and password.
+Enter your username as usual, but for the password, paste your Personal Access Token.
+
+Your repository will now be cloned successfully.
+
+✅ Summary
+So in this session, we:
+
+Configured Git username and email.
+
+Learned how to handle SSL verification issues.
+
+Set up proxy for corporate networks.
+
+Created a Personal Access Token for authentication.
+
+And finally, cloned a repository using these settings.
+
+With these steps, you’re now ready to work with Git in almost any environment — whether it’s your personal setup, a corporate network, or a training lab.
+
+🎬 Thank you for watching, and happy coding!

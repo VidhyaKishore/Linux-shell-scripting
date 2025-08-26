@@ -1,22 +1,37 @@
 👩‍🏫 Introduction
 Hello everyone!
-In this session, I’m going to walk you through some of the most important Git configurations you’ll need when working in different environments.
+In this session, I’m going to walk you through everything you need to get started with Git in our environment.
 
 We’ll cover:
 
-Configuring your Git username and email.
+Installing Git.
 
-Handling SSL certificate issues.
+Configuring your username and email.
 
-Setting up a proxy for corporate networks.
+Handling SSL verification issues.
+
+Setting up a proxy in corporate networks.
 
 Creating a Personal Access Token, or PAT.
 
-Finally, using these settings to clone a repository.
+And finally, cloning a repository from Azure DevOps.
 
-📝 Step 1 – Configure Username and Email
+💻 Step 1 – Install Git
 
-These settings are very important because Git uses them to record who makes changes in a project. Without this, your commits won’t have proper ownership.
+As of now, Git is not available in the MYIT portal to request directly.
+
+Instead, you can go to the Confluence page link shared here, navigate to the Pre-requisites section, and download Git by clicking on the link provided.
+
+Once installed, confirm Git is working by opening your terminal or Git Bash and typing:
+
+git --version
+
+
+If you see the version number, Git has been installed successfully.
+
+📝 Step 2 – Configure Username and Email
+
+These settings are very important because Git uses them to record who makes changes in a project. Without them, your commits won’t have proper ownership.
 
 👉 Open your Git Bash and type:
 
@@ -36,7 +51,7 @@ This means your name and email are applied to all repositories on your system.
 
 If you want different credentials for a specific project only, remove --global and run the same commands inside that project folder.
 
-🔒 Step 2 – SSL Verification in Git
+🔒 Step 3 – SSL Verification in Git
 
 By default, Git always verifies the SSL certificate of the remote server when you run commands like clone, fetch, or push.
 
@@ -63,7 +78,7 @@ git config --list --show-origin
 ⚠️ Important: Disabling SSL verification is not recommended in production, since it exposes you to security risks.
 But in a controlled training setup, this is acceptable as a quick workaround.
 
-🌐 Step 3 – Proxy Setup in Corporate Networks
+🌐 Step 4 – Proxy Setup in Corporate Networks
 
 Sometimes, when connected to a VPN or inside a corporate network, Git commands may fail because all traffic goes through a proxy server.
 
@@ -89,7 +104,7 @@ And if you later don’t need the proxy:
 git config --global --unset http.proxy
 git config --global --unset https.proxy
 
-🔑 Step 4 – Personal Access Token (PAT)
+🔑 Step 5 – Personal Access Token (PAT)
 
 When we work with Git over HTTPS, we often need authentication.
 Most platforms like GitHub, Azure DevOps, and GitLab no longer allow passwords — instead, they require a Personal Access Token (PAT).
@@ -116,13 +131,13 @@ Never commit it to code.
 
 Revoke it immediately if exposed.
 
-📥 Step 5 – Clone a Repository with PAT
+📥 Step 6 – Clone a Repository with PAT
 
 Now let’s put it all together.
 
 When you run:
 
-git clone https://github.com/username/repository.git
+git clone https://dev.azure.com/organization/project/_git/repository
 
 
 Git will ask for your username and password.
@@ -133,15 +148,17 @@ Your repository will now be cloned successfully.
 ✅ Summary
 So in this session, we:
 
-Configured Git username and email.
+Installed Git.
+
+Configured username and email.
 
 Learned how to handle SSL verification issues.
 
 Set up proxy for corporate networks.
 
-Created a Personal Access Token for authentication.
+Created a Personal Access Token.
 
-And finally, cloned a repository using these settings.
+And finally, cloned a repository from Azure DevOps using PAT.
 
 With these steps, you’re now ready to work with Git in almost any environment — whether it’s your personal setup, a corporate network, or a training lab.
 

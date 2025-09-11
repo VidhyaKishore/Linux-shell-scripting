@@ -1,165 +1,64 @@
-👩‍🏫 Introduction
-Hello everyone!
-In this session, I’m going to walk you through everything you need to get started with Git in our environment.
-
-We’ll cover:
-
-Installing Git.
-
-Configuring your username and email.
-
-Handling SSL verification issues.
-
-Setting up a proxy in corporate networks.
-
-Creating a Personal Access Token, or PAT.
-
-And finally, cloning a repository from Azure DevOps.
-
-💻 Step 1 – Install Git
-
-As of now, Git is not available in the MYIT portal to request directly.
-
-Instead, you can go to the Confluence page link shared here, navigate to the Pre-requisites section, and download Git by clicking on the link provided.
-
-Once installed, confirm Git is working by opening your terminal or Git Bash and typing:
-
-git --version
-
-
-If you see the version number, Git has been installed successfully.
-
-📝 Step 2 – Configure Username and Email
-
-These settings are very important because Git uses them to record who makes changes in a project. Without them, your commits won’t have proper ownership.
-
-👉 Open your Git Bash and type:
-
-git config --global user.name "Your Name"
-git config --global user.email "your-email@example.com"
-
-
-Now, verify the settings with:
-
-git config --list
-
-
-You should see your username and email in the output.
-
-By default, we used the --global option.
-This means your name and email are applied to all repositories on your system.
-
-If you want different credentials for a specific project only, remove --global and run the same commands inside that project folder.
-
-🔒 Step 3 – SSL Verification in Git
-
-By default, Git always verifies the SSL certificate of the remote server when you run commands like clone, fetch, or push.
-
-This ensures you’re connecting to a secure server.
-
-However, in training or lab environments, valid SSL certificates may not always be available.
-In such cases, Git may throw SSL errors and prevent you from cloning or pushing code.
-
-Instead of typing this every time:
-
-git -c http.sslVerify=false clone <repo-url>
-
-
-We can configure it once globally:
-
-git config --global http.sslVerify false
-
-
-To confirm:
-
-git config --list --show-origin
-
-
-⚠️ Important: Disabling SSL verification is not recommended in production, since it exposes you to security risks.
-But in a controlled training setup, this is acceptable as a quick workaround.
-
-🌐 Step 4 – Proxy Setup in Corporate Networks
-
-Sometimes, when connected to a VPN or inside a corporate network, Git commands may fail because all traffic goes through a proxy server.
-
-To make Git work properly, configure the proxy:
-
-git config --global http.proxy http://proxy.company.com:8080
-git config --global https.proxy http://proxy.company.com:8080
-
-
-If authentication is required:
-
-git config --global http.proxy http://username:password@proxy.company.com:8080
-git config --global https.proxy http://username:password@proxy.company.com:8080
-
-
-Verify with:
-
-git config --list
-
-
-And if you later don’t need the proxy:
-
-git config --global --unset http.proxy
-git config --global --unset https.proxy
-
-🔑 Step 5 – Personal Access Token (PAT)
-
-When we work with Git over HTTPS, we often need authentication.
-Most platforms like GitHub, Azure DevOps, and GitLab no longer allow passwords — instead, they require a Personal Access Token (PAT).
-
-A PAT acts like a password but is more secure because it can be scoped and time-limited.
-
-👉 To create a PAT:
-
-Log in to your Git platform (e.g., Azure DevOps or GitHub).
-
-Go to User Settings → Personal Access Tokens.
-
-Click New Token.
-
-Give it a name, set an expiration date, and select the required scopes.
-
-Create and copy the token. Remember, you’ll only see it once.
-
-⚠️ Treat your PAT like a password:
-
-Never share it.
-
-Never commit it to code.
-
-Revoke it immediately if exposed.
-
-📥 Step 6 – Clone a Repository with PAT
-
-Now let’s put it all together.
-
-When you run:
-
-git clone https://dev.azure.com/organization/project/_git/repository
-
-
-Git will ask for your username and password.
-Enter your username as usual, but for the password, paste your Personal Access Token.
-
-Your repository will now be cloned successfully.
-
-✅ Summary
-So in this session, we:
-
-Installed Git.
-
-Configured username and email.
-
-Learned how to handle SSL verification issues.
-
-Set up proxy for corporate networks.
-
-Created a Personal Access Token.
-
-And finally, cloned a repository from Azure DevOps using PAT.
-
-With these steps, you’re now ready to work with Git in almost any environment — whether it’s your personal setup, a corporate network, or a training lab.
-
-🎬 Thank you for watching, and happy coding!
+🐧 Podman Cheat Sheet
+🔹 Container Management
+Command	Description
+podman ps	List running containers
+podman ps -a	List all containers (including stopped)
+podman run -it IMAGE	Run container interactively
+podman run -d IMAGE	Run container in detached mode
+podman run --name NAME IMAGE	Run with custom name
+podman exec -it CONTAINER bash	Run a command inside a container
+podman stop CONTAINER	Stop container
+podman start CONTAINER	Start container
+podman restart CONTAINER	Restart container
+podman rm CONTAINER	Remove container
+podman logs CONTAINER	View container logs
+podman top CONTAINER	Show running processes inside container
+🔹 Image Management
+Command	Description
+podman images	List local images
+podman pull IMAGE	Pull image from registry
+podman rmi IMAGE	Remove image
+podman build -t myimage .	Build image from Dockerfile/Containerfile
+podman tag IMAGE myrepo/myimage:tag	Tag image
+podman push IMAGE	Push image to registry
+🔹 Inspect & Info
+Command	Description
+podman inspect NAME/ID	Detailed info (JSON) about container/image/network/volume
+podman inspect --format '{{.State.Status}}' CONTAINER	Extract specific field
+podman version	Show Podman version
+podman info	System info
+🔹 Networks
+Command	Description
+podman network ls	List networks
+podman network inspect net1	Inspect network
+podman network create net1	Create new network
+podman network rm net1	Remove network
+podman network connect net1 CONTAINER	Connect container to network
+podman network disconnect net1 CONTAINER	Disconnect container
+🔹 Volumes
+Command	Description
+podman volume ls	List volumes
+podman volume inspect vol1	Inspect volume
+podman volume create vol1	Create new volume
+podman volume rm vol1	Remove volume
+🔹 Pod Management (Podman exclusive 🚀)
+Command	Description
+podman pod create --name mypod -p 8080:80	Create new pod with port mapping
+podman pod ps	List running pods
+podman pod inspect mypod	Inspect pod
+podman pod rm mypod	Remove pod
+podman pod stop mypod	Stop pod
+🔹 System & Cleanup
+Command	Description
+podman system prune -a	Remove unused data (containers, images, volumes, networks)
+podman stats	Show container resource usage (like docker stats)
+podman events	Show container events in real time
+🔹 File Copy & Commit
+Command	Description
+podman cp CONTAINER:/path /host/path	Copy from container to host
+podman cp /host/path CONTAINER:/path	Copy from host to container
+podman commit CONTAINER myimage	Create new image from container changes
+
+✅ Tip: Podman is rootless by default → safer than Docker. You can run everything without sudo unless you want system-wide containers.
+
+Would you like me to make this into a one-page PDF cheat sheet with grouped commands (like a poster you can keep handy)?

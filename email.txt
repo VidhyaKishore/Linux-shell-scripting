@@ -1,64 +1,34 @@
-🐧 Podman Cheat Sheet
-🔹 Container Management
-Command	Description
-podman ps	List running containers
-podman ps -a	List all containers (including stopped)
-podman run -it IMAGE	Run container interactively
-podman run -d IMAGE	Run container in detached mode
-podman run --name NAME IMAGE	Run with custom name
-podman exec -it CONTAINER bash	Run a command inside a container
-podman stop CONTAINER	Stop container
-podman start CONTAINER	Start container
-podman restart CONTAINER	Restart container
-podman rm CONTAINER	Remove container
-podman logs CONTAINER	View container logs
-podman top CONTAINER	Show running processes inside container
-🔹 Image Management
-Command	Description
-podman images	List local images
-podman pull IMAGE	Pull image from registry
-podman rmi IMAGE	Remove image
-podman build -t myimage .	Build image from Dockerfile/Containerfile
-podman tag IMAGE myrepo/myimage:tag	Tag image
-podman push IMAGE	Push image to registry
-🔹 Inspect & Info
-Command	Description
-podman inspect NAME/ID	Detailed info (JSON) about container/image/network/volume
-podman inspect --format '{{.State.Status}}' CONTAINER	Extract specific field
-podman version	Show Podman version
-podman info	System info
-🔹 Networks
-Command	Description
-podman network ls	List networks
-podman network inspect net1	Inspect network
-podman network create net1	Create new network
-podman network rm net1	Remove network
-podman network connect net1 CONTAINER	Connect container to network
-podman network disconnect net1 CONTAINER	Disconnect container
-🔹 Volumes
-Command	Description
-podman volume ls	List volumes
-podman volume inspect vol1	Inspect volume
-podman volume create vol1	Create new volume
-podman volume rm vol1	Remove volume
-🔹 Pod Management (Podman exclusive 🚀)
-Command	Description
-podman pod create --name mypod -p 8080:80	Create new pod with port mapping
-podman pod ps	List running pods
-podman pod inspect mypod	Inspect pod
-podman pod rm mypod	Remove pod
-podman pod stop mypod	Stop pod
-🔹 System & Cleanup
-Command	Description
-podman system prune -a	Remove unused data (containers, images, volumes, networks)
-podman stats	Show container resource usage (like docker stats)
-podman events	Show container events in real time
-🔹 File Copy & Commit
-Command	Description
-podman cp CONTAINER:/path /host/path	Copy from container to host
-podman cp /host/path CONTAINER:/path	Copy from host to container
-podman commit CONTAINER myimage	Create new image from container changes
+#!/bin/bash
+# File path
+CSV_FILE="/home/emerg1/data/sampledata.csv"
+LOG_FILE="/home/emerg1/data/orders_validation.log"
+EXPECTED_HEADER="orderdate,region,item,total"
+echo "Starting CSV validation: $CSV_FILE" > "$LOG_FILE"
 
-✅ Tip: Podman is rootless by default → safer than Docker. You can run everything without sudo unless you want system-wide containers.
-
-Would you like me to make this into a one-page PDF cheat sheet with grouped commands (like a poster you can keep handy)?
+# 1. Check if file exists
+if [ ! -f "$CSV_FILE" ]; then
+    echo "Error: File not found at $CSV_FILE!" | tee -a "$LOG_FILE"
+    exit 1
+fi
+# 2. Validate header
+header=$(head -n 1 "$CSV_FILE")
+if [ "$header" != "$EXPECTED_HEADER" ]; then
+    echo "Header mismatch!" | tee -a "$LOG_FILE"
+    echo "Expected: $EXPECTED_HEADER" | tee -a "$LOG_FILE"
+    echo "Found:    $header" | tee -a "$LOG_FILE"
+else
+    echo "Header is valid: $header" | tee -a "$LOG_FILE"
+fi
+# 3. Count total rows excluding header
+row_count=$(tail -n +2 "$CSV_FILE" | wc -l)
+echo "Total data rows: $row_count" | tee -a "$LOG_FILE"
+# 4. Check each row for empty fields
+echo "Checking for rows with missing fields..." >> "$LOG_FILE"
+line_num=1
+while IFS=',' read -r orderdate region item total; do
+    ((line_num++))
+    if [[ -z "$orderdate" || -z "$region" || -z "$item" || -z "$total" ]]; then
+        echo "Missing field at line $line_num: [$orderdate, $region, $item, $total]" >> "$LOG_FILE"
+    fi
+done < <(tail -n +2 "$CSV_FILE")
+echo "Validation completed. Check the log: $LOG_FILE"

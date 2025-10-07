@@ -1,36 +1,39 @@
-#!/bin/bash
-ENV_FILE=".env"
-TEMPLATE_FILE="config.template.json"
-OUTPUT_FILE="config.json"
-REPORT_FILE="env_summary.txt"
-echo "Setting up development environment..."
+root@cloud-lab:/shared$ docker build -t vault-app .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
 
-# === STEP 1: Load environment values ===
-if [ ! -f "$ENV_FILE" ]; then
-  echo ".env file not found!"
-  exit 1
-fi
+Sending build context to Docker daemon   7.68kB
+Step 1/11 : FROM node:20.19.1-bullseye AS builder
+ ---> 0092394a1d33
+Step 2/11 : COPY --chown=$USER package.json /opt/app/application/
+ ---> Using cache
+ ---> 2920e6e962f7
+Step 3/11 : WORKDIR /opt/app/application
+ ---> Using cache
+ ---> bde647ea0a8e
+Step 4/11 : RUN npm install
+ ---> Using cache
+ ---> ef7a3c47fea9
+Step 5/11 : RUN ls -1
+ ---> Using cache
+ ---> da42f8e6ff1f
+Step 6/11 : FROM node:20.19.1-slim
+ ---> 82c6e3eb0c2b
+Step 7/11 : WORKDIR /opt/app/application
+ ---> Using cache
+ ---> dca86e284c33
 
-# Using grep to extract values
-APP_NAME=$(grep "^APP_NAME=" "$ENV_FILE" | cut -d'=' -f2)
-PORT=$(grep "^PORT=" "$ENV_FILE" | cut -d'=' -f2)
-DB_USER=$(grep "^DB_USER=" "$ENV_FILE" | cut -d'=' -f2)
-DB_PASS=$(grep "^DB_PASS=" "$ENV_FILE" | cut -d'=' -f2)
-
-# === STEP 2: Replace placeholders in template using sed ===
-cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
-sed -i "s/{{APP_NAME}}/$APP_NAME/" "$OUTPUT_FILE"
-sed -i "s/{{PORT}}/$PORT/" "$OUTPUT_FILE"
-sed -i "s/{{DB_USER}}/$DB_USER/" "$OUTPUT_FILE"
-sed -i "s/{{DB_PASS}}/$DB_PASS/" "$OUTPUT_FILE"
-echo "Config file generated: $OUTPUT_FILE"
-
-
-# === STEP 3: Generate environment summary using awk ===
-echo "Generating summary report..."
-
-awk -F= '{ printf "- %s = %s\n", $1, $2 }' "$ENV_FILE" > "$REPORT_FILE"
-echo "--- End of Summary ---" >> "$REPORT_FILE"
-echo "Summary written to: $REPORT_FILE"
-
-
+Step 8/11 : COPY --from=builder --chown=$USER /opt/app/application/node_modules /opt/app/application/node_modules
+ ---> Using cache
+ ---> ff7e00525d1b
+Step 9/11 : COPY --chown=$USER app.js /opt/app/application/
+ ---> Using cache
+ ---> 500f77161ce5
+Step 10/11 : EXPOSE 3000
+ ---> Using cache
+ ---> 95a2a33e786c
+Step 11/11 : RUN sed -i 's\server.js\app.js\g' /opt/app/run.sh
+ ---> Running in 937b6b06a636
+sed: can't read /opt/app/run.sh: No such file or directory
+The command '/bin/sh -c sed -i 's\server.js\app.js\g' /opt/app/run.sh' returned a non-zero code: 2

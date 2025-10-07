@@ -1,1 +1,17 @@
 
+FROM cache.artifactory.global.standardchartered.com/gv-images-products/scb-bases/gts-1114/node-builder:20.19.1-micro-6314908 as builder
+COPY --chown=$USER package.json /opt/app/application/
+WORKDIR /opt/app/application
+RUN npm install
+RUN ls -1
+
+FROM artifactory.global.standardchartered.com/gv-images-products/scb-bases/gts-1114/node:20.19.1-micro-6679849
+WORKDIR /opt/app/application
+# copy installed dependencies from the previous image
+COPY --from=builder --chown=$USER /opt/app/application/node_modules /opt/app/application/node_modules
+# copy in your script(s)
+COPY --chown=$USER app.js /opt/app/application/
+
+EXPOSE 3000
+# by default in base image, container starts with "node server.js", replace "server.js" with your file name
+RUN sed -i 's\server.js\app.js\g' /opt/app/run.sh

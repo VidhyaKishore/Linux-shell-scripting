@@ -1,0 +1,190 @@
+Azure Foundation Lab Guide
+Exercise 4: VNET peering
+1.	Create two resource groups – one for each network
+	RG-VNET1
+	RG-VNET2
+ 
+ 
+
+
+
+2.	Create two VNets
+VNet	Address Space	Subnet	Subnet Address	RG
+VNET-1	10.0.0.0/16	Subnet-1	10.0.1.0/24	RG-VNET-1
+VNET-2	10.1.0.0/16	Subnet-2	10.1.1.0/24	RG-VNET-2
+
+
+
+VNET -1 creation
+Create VNET with the name VNET-1 and choose resource group as RG-VNET-1
+ 
+
+Under IP addresses add new subnet name it as Subnet-1 
+
+ 
+
+
+
+
+
+
+Click on review create
+ 
+
+VNET-2 creation
+
+ 
+
+Under IP addresses change the Ip address space as 10.1.0.0/16 add new subnet name it as Subnet-2
+ 
+Click on review create
+
+ 
+3.	Deploy Virtual Machines – Create one VM in each VNet.
+
+VM Name	RG Name	VNet Name	Image
+VM-1	RG-VNET-1	VNET-1	Ubuntu
+VM-2	RG-VNET-2	VNET-2	Ubuntu
+
+VM-1 Creation:
+ 
+ 
+
+
+Under networking tab make sure to choose VNET-1 and click review create.
+
+ 
+
+VM-2 Creation:
+
+ 
+
+ 
+
+4.	Test connectivity before peering
+	Open VM-1 and click connect
+ 
+•	Copy the ssh command and run it in the command prompt. 
+ 
+Connect to the VM and ping the VM-2 private ip address. 
+ 
+
+5.	Creating VNET peering
+•	Go to VNET-1, choose peerings option and click on add. 
+ 
+Name your peering link as VNET-1-TO-VENT-2 and choose VNET-2 as virtual network to connect with.
+ 
+Click on add button to complete the peering.
+ 
+6.	Test connectivity after peering
+From VM-1 ping the private IP address of VM-2 -> ping -c4 <VM-2_private_ip>
+  
+
+Conclusion:
+•  VNet Peering allows private communication between Azure VNets.
+•  Traffic flows through Azure’s backbone network (not internet).
+•  Peering can be intra-region or global.
+•  No overlapping IP spaces allowed.
+•  Billing: minimal — based on data transfer.
+
+----------------------------------------------------------------------------------------------------
+
+
+Fill the RG name, give name to ELB and change the type to public to access it publically.
+
+We need to create front end IP config. Click on add frontend ip config.
+
+After giving a name to the frontend ip config, Click on add public IP address. 
+
+Provide public ip name and save it.
+
+After creating new public ip. Click save button and click next.
+
+Click on add backend pool.
+
+Give a name to the backend pool and select the existing V-Net. Since we are going to add the VM scale set let save as of now. 
+
+Click next and come to inbound rule. Click on add a load balancing rule.
+
+Give a name to the outbound rule, choose frondend IP & backend IP as what we have created from the dropdown. Choose the frondend and backend port as 80. Now click on create new health probes.
+
+Give name to health probe and change the protocol to HTTP and click save. Click next
+
+Click on review create.
+
+Checking the resource we created.
+
+Enabling VMSS
+Click on subscriptions. 
+
+Choose the subscription name. 
+
+Go to left side tab and select recourse provider under settings tab.
+
+Type Stream in the search box and select Microsoft.StreamAnalytics. (Which is not registered). 
+
+Select the resource provider and click register.
+
+Re-register a resource provider to use locations that you added since the previous registration.
+
+View resource provider
+In the All services box, enter resource explorer, and select Resource Explorer.
+
+Select the right arrow to expand Providers.
+
+Expand the resource provider and resource type that you want to view. Resource Manager is supported in all regions, but the resources you deploy might not be supported in all regions. Also, there might be limitations on your subscription that prevent you from using some regions that support the resource. Resource Explorer displays valid locations for the resource type.
+Click on Microsoft Batch -> batch Account -> Know the list of reason it is supported. 
+
+The API version corresponds to a version of the resource provider's REST API operations. As a resource provider enables new features, it releases a new version of the REST API. Resource Explorer displays valid API versions for the resource type.
+
+
+VM SCALE SET creation
+From the home page search for virtual machine scale set. 
+
+Click on create.
+
+Choose the RG, Provide name to the VM scale set, select the zone, choose orchestration as flexible, select the image, click on password under administrator tab and provide the name and password. 
+
+
+
+Under the networking tab, Select the V-Net that we used while creating ELB, select the subnet, choose load balancing option as azure load balancer, select the load balancer we created, select the backend pool we created. 
+
+
+Under the management tab, disable boot diagnostic. Since this a lab we are disabling otherwise its recommended to enable this option.
+
+In the advanced tab provide the user data for the VM and click on review create.
+#!/bin/bash
+# Install Apache Web Server
+sudo apt update -y
+sudo apt install -y apache2
+sudo systemctl start apache2
+sudo systemctl enable apache2
+
+# Get the server hostname
+HOSTNAME=$(hostname)
+
+# Create a sample webpage with the server name
+sudo bash -c "echo '<html><body><h1>Welcome to $HOSTNAME!</h1></body></html>' > /var/www/html/index.html"
+
+NSG setting
+Choose NSG from home page.
+
+Select the NSG that is already present.
+
+Click on setting on the left side pane and inbound security rule.
+
+Click on add button and fill the details as given below. Change the source as My IP address and service as HTTP.
+
+Go to the load balancer that we created and copy the frontend IP address and past it in the tab. 
+
+The result will be.
+
+Open another in the private window. We can witness the load getting distributed.
+
+
+------------XXXXXXXXXXXXXX----------
+VNet Peering
+
+
+
+

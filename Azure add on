@@ -396,4 +396,109 @@ Automated Pipelines: Azure DevOps, GitHub Actions
 
 Together, they form the Azure Deployment Ecosystem, enabling DevOps-driven, automated, and repeatable deployments.
 
+-----------------------------------------------------------------------
+🌐 What is Azure IAM?
 
+Azure Identity and Access Management (IAM) — also known as Azure Role-Based Access Control (Azure RBAC) — is a framework that manages who can access what resources in Azure.
+
+It ensures that only authorized users can perform specific actions on particular resources.
+
+🧩 Key Components of Azure IAM
+Component	Description	Example
+Identity	Represents a user, group, service principal, or managed identity.	User: vidya@company.com
+
+Role Definition	A set of permissions (actions that can be performed).	Contributor, Reader, Owner
+Scope	The level at which access applies — Management Group, Subscription, Resource Group, or Resource.	Apply a role to a specific Resource Group only.
+Role Assignment	Connects an identity to a role at a specific scope.	Assign Reader role to User1 at RG1 scope.
+🏗️ How Azure IAM Works
+
+User/Service logs in → authenticated via Azure AD (Azure Active Directory).
+
+IAM checks role assignments → what permissions the user has.
+
+IAM enforces access control → only allowed actions can be performed.
+
+🔐 Built-in Roles
+
+Azure provides several built-in roles (you can also create custom ones):
+
+Role	Permissions
+Owner	Full access, including assigning roles.
+Contributor	Can create/manage resources, but not grant access.
+Reader	Can only view resources.
+User Access Administrator	Can manage access for other users.
+🧱 Scopes in Azure IAM (Hierarchy)
+Management Group
+     ↓
+Subscription
+     ↓
+Resource Group
+     ↓
+Resource
+
+
+👉 Permissions are inherited down the hierarchy.
+
+Example:
+If a user is a Reader at the Subscription level → they automatically have read access to all Resource Groups and Resources inside it.
+
+📘 Example Scenario
+
+Let’s say:
+
+You have a Subscription called Prod-Subscription
+
+Inside it, a Resource Group App-RG
+
+It contains a VM named App-Server
+
+You can assign:
+
+Vidya as Owner at App-RG (can manage everything in RG)
+
+John as Reader at App-RG (can only view)
+
+App Service Identity as Contributor on App-Server (can deploy code but not assign roles)
+
+🎨 Diagram (for PPT)
+
+Title: Azure IAM (Role-Based Access Control)
+
+         ┌──────────────────────────┐
+         │     Azure AD (Identity)  │
+         └────────────┬─────────────┘
+                      │
+           Authentication & Token
+                      │
+      ┌───────────────▼────────────────┐
+      │        Azure IAM (RBAC)        │
+      └───────────────┬────────────────┘
+                      │
+        Role Assignment: Who → Role → Scope
+                      │
+   ┌──────────────────┼───────────────────┐
+   │                  │                   │
+User A → Owner  @ Subscription   User B → Reader @ RG1
+Service Principal → Contributor @ VM
+
+🧠 In Simple Terms
+
+Azure IAM = Who (Identity) + What (Role) + Where (Scope)
+
+Example:
+
+Vidya (User) → Contributor (Role) → Resource Group “WebApp-RG” (Scope)
+
+This means Vidya can manage resources inside “WebApp-RG” but cannot modify IAM settings.
+
+💬 Tip for PPT
+
+Use a slide layout like this:
+
+Left side: Diagram
+
+Right side: 3 bullets summarizing
+
+✅ Centralized access control
+✅ Role-based permissions
+✅ Inherited hierarchy

@@ -316,6 +316,84 @@ Diagram showing users → Load Balancer → VMSS → Auto-scaling
 
 Bottom Caption:
 “Azure Load Balancer evenly distributes traffic, while VM Scale Sets automatically scale the number of VMs based on workload demand.”
+-------------------------------------------------------------------------------------------------------
+🧩 Title: Deployment Technologies in Azure
+1. What is Deployment in Azure?
 
+Deployment in Azure means automating the process of creating, configuring, and managing resources (like VMs, storage, networks, databases, etc.) in a consistent and repeatable way.
+
+It helps avoid manual errors and speeds up the delivery of cloud infrastructure or applications.
+
+⚙️ 2. Key Deployment Technologies in Azure
+Technology	Description	Best For
+Azure Portal	Web-based UI for creating and managing resources manually.	Small or demo deployments.
+Azure CLI	Command-line tool (az commands) to deploy and manage resources via scripts.	Developers, automation scripts, CI/CD.
+Azure PowerShell	Uses PowerShell cmdlets to manage Azure resources.	Admins familiar with Windows PowerShell.
+ARM Templates (Azure Resource Manager Templates)	JSON-based templates that define infrastructure as code (IaC).	Repeatable, declarative deployments.
+Bicep	Simplified language that compiles to ARM templates (IaC). Easier syntax than JSON.	Modern IaC with better readability.
+Terraform (by HashiCorp)	Open-source IaC tool supporting multi-cloud deployments including Azure.	Cross-cloud environments & automation.
+GitHub Actions / Azure DevOps Pipelines	CI/CD tools to automate build, test, and deployment workflows.	Continuous deployment for applications.
+🧠 3. Diagram – Deployment Flow in Azure
+
+You can include this visual in your slide:
+
+[ Developer ]
+     |
+     v
+[ Code Repository (GitHub/Azure Repos) ]
+     |
+     v
+[ CI/CD Pipeline (Azure DevOps / GitHub Actions) ]
+     |
+     v
+[ IaC Templates (Bicep / ARM / Terraform) ]
+     |
+     v
+[ Azure Resource Manager (ARM) ]
+     |
+     v
+[ Azure Resources Created ]
+
+
+✅ ARM is the control layer that ensures all resources are deployed in an organized and secure way.
+
+🚀 4. Why Use Deployment Technologies?
+
+Consistency: Deploy identical environments repeatedly.
+
+Speed: Automate instead of manually configuring.
+
+Scalability: Easily scale infrastructure.
+
+Version Control: Track infrastructure changes in Git.
+
+Integration: Works seamlessly with CI/CD pipelines.
+
+🏗️ 5. Example: Simple Bicep Deployment
+resource myStorage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+  name: 'vidhyastorage001'
+  location: resourceGroup().location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+}
+
+
+Then deploy using:
+
+az deployment group create --resource-group myRG --template-file main.bicep
+
+🎯 6. Summary Slide
+
+Manual: Azure Portal
+
+Scripted: Azure CLI, PowerShell
+
+Infrastructure as Code: ARM, Bicep, Terraform
+
+Automated Pipelines: Azure DevOps, GitHub Actions
+
+Together, they form the Azure Deployment Ecosystem, enabling DevOps-driven, automated, and repeatable deployments.
 
 

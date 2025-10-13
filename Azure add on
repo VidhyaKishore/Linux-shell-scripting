@@ -502,3 +502,76 @@ Right side: 3 bullets summarizing
 ✅ Centralized access control
 ✅ Role-based permissions
 ✅ Inherited hierarchy
+------------------------------------------------------------------------------------------------------------------------------
+
+💰 Azure Cost Management and Billing
+🔹 Definition
+
+Azure Cost Management and Billing is a suite of tools provided by Microsoft to help organizations monitor, allocate, and optimize cloud spending.
+It ensures you’re getting the maximum value out of your Azure resources.
+
+🧩 Key Components
+Component	Description
+Billing	Manages your invoices, payment methods, subscriptions, and overall account-level costs.
+Cost Analysis	Provides visual reports and charts to analyze where your money is being spent across resources, services, and departments.
+Budgets	Lets you set spending limits and receive alerts when you approach or exceed your defined thresholds.
+Recommendations (Advisor)	Suggests ways to reduce costs, like resizing underutilized VMs or shutting down idle resources.
+Exports	Automatically exports your cost data to Storage Accounts or Power BI for advanced analysis.
+Cost Allocation Tags	Helps attribute costs to specific teams, projects, or environments using tags like Dept=Finance or Env=Production.
+⚙️ How Azure Cost Management Works
+🪄 Process Overview
+
+Collects usage data from all your Azure resources (VMs, storage, databases, etc.).
+
+Aggregates billing based on your subscription or management group.
+
+Visualizes spending trends in dashboards and cost reports.
+
+Analyzes cost patterns to find inefficiencies and savings opportunities.
+
+Implements budgets & policies to control and predict future spend.
+
+📊 Common Tools in Azure Portal
+
+Cost Management + Billing → Access directly from the left menu in Azure Portal.
+
+Cost Analysis → View cost breakdowns by service, resource group, or tag.
+
+Budgets → Create alerts for exceeding set cost limits.
+
+Advisor Recommendations → Use the “Cost” tab for optimization tips.
+
+🚀 Best Practices
+
+✅ Tag all resources for accountability.
+✅ Set budgets for each department/project.
+✅ Use Reserved Instances or Savings Plans for predictable workloads.
+✅ Monitor cost anomalies daily or weekly.
+✅ Automate shutdown of idle environments (e.g., Dev/Test after hours).
+✅ Export cost data to Power BI for deep visualization and trend prediction.
+
+🌐 Azure DevOps + Terraform Integration (Org Context)
+
+Since your org uses Azure DevOps (ADO) and Terraform (IaC):
+
+You can integrate Cost Management data into your CI/CD pipelines to track infra cost changes per deployment.
+
+Terraform tags (like project, env, owner) can automatically map to cost centers in Azure Cost Management.
+
+ADO dashboards can pull Power BI reports with Azure cost insights for leadership visibility.
+
+🖼️ Suggested Diagram for PPT
+                +-----------------------------+
+                |   Azure Cost Management     |
+                +-----------------------------+
+                      /        |        \
+                     /         |         \
+         +-----------+   +-----------+   +-----------+
+         |  Cost      |   |  Budgets  |   |  Reports  |
+         |  Analysis  |   |  & Alerts |   |  & Export |
+         +-----------+   +-----------+   +-----------+
+               |                |               |
+        +------+--------+   +---+---+    +-------------+
+        | Tagging/      |   | Azure |    | Power BI /  |
+        | Resource Data |   | Policy|    | Excel Export|
+        +---------------+   +-------+    +-------------+

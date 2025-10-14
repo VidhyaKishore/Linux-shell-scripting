@@ -590,3 +590,14 @@ The pipeline executes Terraform commands (init, plan, apply).
 Terraform uses an Azure Service Principal to authenticate with Azure.
 
 The Azure Resource Manager (ARM) deploys and manages the resources as defined in the Terraform files.
+
+
+Consistency: Deploy identical environments repeatedly.
+
+Speed: Automate instead of manually configuring.
+
+Scalability: Easily scale infrastructure.
+
+Version Control: Track infrastructure changes in Git.
+
+Integration: Works seamlessly with CI/CD pipelines like Azure DevOps.

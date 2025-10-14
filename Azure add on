@@ -575,3 +575,18 @@ ADO dashboards can pull Power BI reports with Azure cost insights for leadership
         | Tagging/      |   | Azure |    | Power BI /  |
         | Resource Data |   | Policy|    | Excel Export|
         +---------------+   +-------+    +-------------+
+
+
+
+
+Explanation:
+
+Developers commit Terraform code to Git (Azure Repos or GitHub).
+
+Azure DevOps Pipelines get triggered automatically on code push.
+
+The pipeline executes Terraform commands (init, plan, apply).
+
+Terraform uses an Azure Service Principal to authenticate with Azure.
+
+The Azure Resource Manager (ARM) deploys and manages the resources as defined in the Terraform files.

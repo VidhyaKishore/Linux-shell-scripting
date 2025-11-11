@@ -21,5 +21,66 @@ Branch Naming Conventions
 •	Feature track: feature/ADO-xxxxxxx (e.g., feature/ADO-2297575)
 •	Bugfix track: bugfix/ADO-xxxxxxx (e.g., bugfix/ADO-2297575)
 
+Module: ADO Branching Policies in SCB
+🎯 Learning Objective
+
+By the end of this lesson, you’ll understand:
+
+How branching works in Azure DevOps (ADO)
+
+The types of branches used in SCB
+
+Naming conventions for consistent and organized code management
+
+🌳 Branching Overview
+
+Branching helps developers work on different tasks — such as features, fixes, or releases — without affecting the main production code.
+
+In SCB, branches are classified into Protected and Non-Protected types.
+
+🔒 Protected Branches
+
+These are the core branches of the repository.
+They are locked down to prevent direct changes and ensure code stability.
+
+Branch	Purpose
+main	Stable production branch — always in a deployable state
+develop	Integration branch where all features and bug fixes are merged before release
+release/*	Used to prepare code for production deployment, final testing, and bug fixes
+hotfix/*	Used for critical fixes directly in production
+hotfix/ecr/*	Specifically for Emergency Change Request (ECR) fixes in production
+🧩 Non-Protected Branches
+
+These branches are used for active development and can be created freely by developers.
+
+Branch	Purpose
+feature/*	For developing new features or enhancements
+bugfix/*	For fixing bugs identified during the development phase
+🏷️ Branch Naming Conventions
+
+To maintain clarity and traceability, follow standard branch naming formats.
+
+Type	Format	Example
+Release track	release/<rel version>	release/1.6.0
+Hotfix track	hotfix/<rel version>	hotfix/1.6.1
+ECR track	hotfix/ecr/<version>	hotfix/ecr/1.6.1
+Feature track	feature/ADO-<work-item-id>	feature/ADO-2297575
+Bugfix track	bugfix/ADO-<work-item-id>	bugfix/ADO-2297575
+🧠 Quick Recap
+
+Protected branches are stable and controlled.
+
+Non-protected branches are for active development.
+
+Consistent naming helps track work items in Azure DevOps.
+
+🎬 Suggested Voiceover (Simple Script)
+
+“In SCB’s Azure DevOps setup, branches are organized to keep the codebase clean and reliable.
+Protected branches like main, develop, and release ensure production stability.
+Non-protected branches like feature and bugfix are where developers work daily.
+Naming conventions such as feature/ADO-12345 help link code changes back to Azure DevOps work items.
+This structure ensures smooth collaboration and efficient release management.”
+
 
 

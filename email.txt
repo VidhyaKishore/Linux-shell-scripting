@@ -3,5 +3,23 @@ Branches in Git allow us to work on new features or experiments without affectin
 git checkout -b feature/login-page
 git branch
 
+ADO Branching Policies in SCB
+Branch Types
+Protected Branches:
+1.	Main - The stable production branch that should always be in a deployable state
+2.	Develop - Integration branch where features and bug fixes are merged
+3.	Release.* - Prepares code for production deployment, allowing final testing and bug fixes
+4.	Hotfix.* - Used for critical fixes in the production environment
+5.	Hotfix/ecr/* - Used specifically for Emergency Change Request critical fixes in production
+Non-Protected Branches:
+1.	Feature.* - Used for developing new features or enhancements
+2.	Bugfix.* - Used for addressing bugs found in the development phase
+Branch Naming Conventions
+•	Release track: release/<rel version> (e.g., release/1.6.0)
+•	Hotfix track: hotfix/<rel version> (e.g., hotfix/1.6.1)
+•	ECR track: hotfix/ecr/<version> (e.g., hotfix/ecr/1.6.1)
+•	Feature track: feature/ADO-xxxxxxx (e.g., feature/ADO-2297575)
+•	Bugfix track: bugfix/ADO-xxxxxxx (e.g., bugfix/ADO-2297575)
+
 
 

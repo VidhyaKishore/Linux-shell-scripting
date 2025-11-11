@@ -1,39 +1,4 @@
-root@cloud-lab:/shared$ docker build -t vault-app .
-DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
+Branches in Git allow us to work on new features or experiments without affecting the main codebase.
 
-Sending build context to Docker daemon   7.68kB
-Step 1/11 : FROM node:20.19.1-bullseye AS builder
- ---> 0092394a1d33
-Step 2/11 : COPY --chown=$USER package.json /opt/app/application/
- ---> Using cache
- ---> 2920e6e962f7
-Step 3/11 : WORKDIR /opt/app/application
- ---> Using cache
- ---> bde647ea0a8e
-Step 4/11 : RUN npm install
- ---> Using cache
- ---> ef7a3c47fea9
-Step 5/11 : RUN ls -1
- ---> Using cache
- ---> da42f8e6ff1f
-Step 6/11 : FROM node:20.19.1-slim
- ---> 82c6e3eb0c2b
-Step 7/11 : WORKDIR /opt/app/application
- ---> Using cache
- ---> dca86e284c33
-
-Step 8/11 : COPY --from=builder --chown=$USER /opt/app/application/node_modules /opt/app/application/node_modules
- ---> Using cache
- ---> ff7e00525d1b
-Step 9/11 : COPY --chown=$USER app.js /opt/app/application/
- ---> Using cache
- ---> 500f77161ce5
-Step 10/11 : EXPOSE 3000
- ---> Using cache
- ---> 95a2a33e786c
-Step 11/11 : RUN sed -i 's\server.js\app.js\g' /opt/app/run.sh
- ---> Running in 937b6b06a636
-sed: can't read /opt/app/run.sh: No such file or directory
-The command '/bin/sh -c sed -i 's\server.js\app.js\g' /opt/app/run.sh' returned a non-zero code: 2
+git checkout -b feature/login-page
+git branch

@@ -81,6 +81,32 @@ Protected branches like main, develop, and release ensure production stability.
 Non-protected branches like feature and bugfix are where developers work daily.
 Naming conventions such as feature/ADO-12345 help link code changes back to Azure DevOps work items.
 This structure ensures smooth collaboration and efficient release management.”
+-------------------------
 
+The Main branch is always stable and ready for deployment.
+
+The Develop branch is where developers merge their completed work before it’s released.
+
+The Release branches, shown as release dot star, are used to finalize code and perform last-stage testing before going live.
+
+The Hotfix branches handle urgent fixes in production.
+
+And finally, the Hotfix slash E-C-R branch is used specifically for Emergency Change Requests — these are high-priority production fixes.”
+-------------------------------
+A Feature branch is used when creating a new feature or enhancement.
+
+A Bugfix branch is used when resolving defects found during development.”
+--------------------------------
+Following a standard naming convention helps us track code changes directly to Azure DevOps work items.
+
+For example —
+
+Release branches use the format release slash version number, such as release slash one point six point zero.
+
+Hotfix branches follow hotfix slash version, like hotfix slash one point six point one.
+
+Emergency change requests use hotfix slash e-c-r slash version, for example hotfix slash e-c-r slash one point six point one.
+
+Feature and Bugfix branches link to ADO work items — such as feature slash ADO dash two two nine seven five seven five, or bugfix slash ADO dash two two nine seven five seven five.”
 
 

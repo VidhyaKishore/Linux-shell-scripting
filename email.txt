@@ -32,3 +32,23 @@ echo "Generating summary report..."
 awk -F= '{ printf "- %s = %s\n", $1, $2 }' "$ENV_FILE" > "$REPORT_FILE"
 echo "--- End of Summary ---" >> "$REPORT_FILE"
 echo "Summary written to: $REPORT_FILE"
+
+
+emerg1@uklvadsb0159[DEV][~] $ cat config.json
+{
+    "app": "CoolApp",
+    "port": "8080",
+    "database": {
+      "user": "devuser",
+      "password": "secret123"
+    }
+  }
+
+emerg1@uklvadsb0159[DEV][~] $ cat env_summary.txt
+- APP_NAME = CoolApp
+- PORT = 8080
+- DB_USER = devuser
+- DB_PASS = secret123
+-  =
+--- End of Summary ---
+

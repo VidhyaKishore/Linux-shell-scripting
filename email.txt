@@ -1,112 +1,26 @@
-Branches in Git allow us to work on new features or experiments without affecting the main codebase.
-
-git checkout -b feature/login-page
-git branch
-
-ADO Branching Policies in SCB
-Branch Types
-Protected Branches:
-1.	Main - The stable production branch that should always be in a deployable state
-2.	Develop - Integration branch where features and bug fixes are merged
-3.	Release.* - Prepares code for production deployment, allowing final testing and bug fixes
-4.	Hotfix.* - Used for critical fixes in the production environment
-5.	Hotfix/ecr/* - Used specifically for Emergency Change Request critical fixes in production
-Non-Protected Branches:
-1.	Feature.* - Used for developing new features or enhancements
-2.	Bugfix.* - Used for addressing bugs found in the development phase
-Branch Naming Conventions
-•	Release track: release/<rel version> (e.g., release/1.6.0)
-•	Hotfix track: hotfix/<rel version> (e.g., hotfix/1.6.1)
-•	ECR track: hotfix/ecr/<version> (e.g., hotfix/ecr/1.6.1)
-•	Feature track: feature/ADO-xxxxxxx (e.g., feature/ADO-2297575)
-•	Bugfix track: bugfix/ADO-xxxxxxx (e.g., bugfix/ADO-2297575)
-
-Module: ADO Branching Policies in SCB
-🎯 Learning Objective
-
-By the end of this lesson, you’ll understand:
-
-How branching works in Azure DevOps (ADO)
-
-The types of branches used in SCB
-
-Naming conventions for consistent and organized code management
-
-🌳 Branching Overview
-
-Branching helps developers work on different tasks — such as features, fixes, or releases — without affecting the main production code.
-
-In SCB, branches are classified into Protected and Non-Protected types.
-
-🔒 Protected Branches
-
-These are the core branches of the repository.
-They are locked down to prevent direct changes and ensure code stability.
-
-Branch	Purpose
-main	Stable production branch — always in a deployable state
-develop	Integration branch where all features and bug fixes are merged before release
-release/*	Used to prepare code for production deployment, final testing, and bug fixes
-hotfix/*	Used for critical fixes directly in production
-hotfix/ecr/*	Specifically for Emergency Change Request (ECR) fixes in production
-🧩 Non-Protected Branches
-
-These branches are used for active development and can be created freely by developers.
-
-Branch	Purpose
-feature/*	For developing new features or enhancements
-bugfix/*	For fixing bugs identified during the development phase
-🏷️ Branch Naming Conventions
-
-To maintain clarity and traceability, follow standard branch naming formats.
-
-Type	Format	Example
-Release track	release/<rel version>	release/1.6.0
-Hotfix track	hotfix/<rel version>	hotfix/1.6.1
-ECR track	hotfix/ecr/<version>	hotfix/ecr/1.6.1
-Feature track	feature/ADO-<work-item-id>	feature/ADO-2297575
-Bugfix track	bugfix/ADO-<work-item-id>	bugfix/ADO-2297575
-🧠 Quick Recap
-
-Protected branches are stable and controlled.
-
-Non-protected branches are for active development.
-
-Consistent naming helps track work items in Azure DevOps.
-
-🎬 Suggested Voiceover (Simple Script)
-
-“In SCB’s Azure DevOps setup, branches are organized to keep the codebase clean and reliable.
-Protected branches like main, develop, and release ensure production stability.
-Non-protected branches like feature and bugfix are where developers work daily.
-Naming conventions such as feature/ADO-12345 help link code changes back to Azure DevOps work items.
-This structure ensures smooth collaboration and efficient release management.”
--------------------------
-
-The Main branch is always stable and ready for deployment.
-
-The Develop branch is where developers merge their completed work before it’s released.
-
-The Release branches, shown as release dot star, are used to finalize code and perform last-stage testing before going live.
-
-The Hotfix branches handle urgent fixes in production.
-
-And finally, the Hotfix slash E-C-R branch is used specifically for Emergency Change Requests — these are high-priority production fixes.”
--------------------------------
-A Feature branch is used when creating a new feature or enhancement.
-
-A Bugfix branch is used when resolving defects found during development.”
---------------------------------
-Following a standard naming convention helps us track code changes directly to Azure DevOps work items.
-
-For example —
-
-Release branches use the format release slash version number, such as release slash one point six point zero.
-
-Hotfix branches follow hotfix slash version, like hotfix slash one point six point one.
-
-Emergency change requests use hotfix slash e-c-r slash version, for example hotfix slash e-c-r slash one point six point one.
-
-Feature and Bugfix branches link to ADO work items — such as feature slash ADO dash two two nine seven five seven five, or bugfix slash ADO dash two two nine seven five seven five.”
-
-
+#!/bin/bash
+SOURCE_DIR="/home/emerg1/sort"  # Change if needed
+EMPTY_DIR="$SOURCE_DIR/empty_files"
+NON_EMPTY_DIR="$SOURCE_DIR/non_empty_files"
+# Create destination directories if they don't exist
+mkdir -p "$EMPTY_DIR"
+mkdir -p "$NON_EMPTY_DIR"
+# Loop through files in the source directory
+for file in "$SOURCE_DIR"/*.txt; do
+        # Make sure it's a regular file
+    if [ -f "$file" ]; then
+            # skip if the file is in the empty or non empty folders already
+            if [[ "$file" == "$EMPTY_DIR/"* || "$file" == "$NON_EMPTY_DIR/"* ]]; then
+                    continue
+            fi
+         # -s checkes if the file is non-zero size
+        if [ ! -s "$file" ]; then
+            echo "Moving empty file: $file"
+            mv "$file" "$EMPTY_DIR/"
+        else
+            echo "Moving non-empty file: $file"
+            mv "$file" "$NON_EMPTY_DIR/"
+        fi
+    fi
+done
+echo "Sorting complete."

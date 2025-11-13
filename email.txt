@@ -1,29 +1,29 @@
-.env file
-APP_NAME=CoolApp
-PORT=8080
-DB_USER=devuser
-DB_PASS=secret123
+#!/bin/bash
+ENV_FILE=".env"
+TEMPLATE_FILE="config.template.json"
+OUTPUT_FILE="config.json"
+REPORT_FILE="env_summary.txt"
+echo "Setting up development environment..."
 
-config.trmplate.json
-{
-    "app": "{{APP_NAME}}",
-    "port": "{{PORT}}",
-    "database": {
-      "user": "{{DB_USER}}",
-      "password": "{{DB_PASS}}"
-    }
-  }
+# === STEP 1: Load environment values ===
+if [ ! -f "$ENV_FILE" ]; then
+  echo ".env file not found!"
+  exit 1
+fi
 
-shell script
+# Using grep to extract values
+APP_NAME=$(grep "^APP_NAME=" "$ENV_FILE" | cut -d'=' -f2)
+PORT=$(grep "^PORT=" "$ENV_FILE" | cut -d'=' -f2)
+DB_USER=$(grep "^DB_USER=" "$ENV_FILE" | cut -d'=' -f2)
+DB_PASS=$(grep "^DB_PASS=" "$ENV_FILE" | cut -d'=' -f2)
 
-{
-    "app": "{{APP_NAME}}",
-    "port": "{{PORT}}",
-    "database": {
-      "user": "{{DB_USER}}",
-      "password": "{{DB_PASS}}"
-    }
-  }
+# === STEP 2: Replace placeholders in template using sed ===
+cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
+sed -i "s/{{APP_NAME}}/$APP_NAME/" "$OUTPUT_FILE"
+sed -i "s/{{PORT}}/$PORT/" "$OUTPUT_FILE"
+sed -i "s/{{DB_USER}}/$DB_USER/" "$OUTPUT_FILE"
+sed -i "s/{{DB_PASS}}/$DB_PASS/" "$OUTPUT_FILE"
+echo "Config file generated: $OUTPUT_FILE"
 
 
 # === STEP 3: Generate environment summary using awk ===

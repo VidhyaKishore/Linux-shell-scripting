@@ -1,54 +1,45 @@
-#!/bin/bash
-ENV_FILE=".env"
-TEMPLATE_FILE="config.template.json"
-OUTPUT_FILE="config.json"
-REPORT_FILE="env_summary.txt"
-echo "Setting up development environment..."
+Intro
+"In this video, we will learn how to commit your changes and push them to an Azure DevOps Git repository. Let’s begin."
 
-# === STEP 1: Load environment values ===
-if [ ! -f "$ENV_FILE" ]; then
-  echo ".env file not found!"
-  exit 1
-fi
+Step 1: Check Your Changes
+"First, let’s check what files have been modified in our working directory.
+Run:*
+git status
+Any modified files will be shown in red. These files are not yet staged for commit."
 
-# Using grep to extract values
-APP_NAME=$(grep "^APP_NAME=" "$ENV_FILE" | cut -d'=' -f2)
-PORT=$(grep "^PORT=" "$ENV_FILE" | cut -d'=' -f2)
-DB_USER=$(grep "^DB_USER=" "$ENV_FILE" | cut -d'=' -f2)
-DB_PASS=$(grep "^DB_PASS=" "$ENV_FILE" | cut -d'=' -f2)
+Step 2: Stage the Files
+"Before committing, we need to stage the changes.
+You can stage a specific file:*
+git add filename
+Or stage everything at once:
+git add .
+After staging, run git status again — now the files will appear in green, which means they are ready for commit."
 
-# === STEP 2: Replace placeholders in template using sed ===
-cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
-sed -i "s/{{APP_NAME}}/$APP_NAME/" "$OUTPUT_FILE"
-sed -i "s/{{PORT}}/$PORT/" "$OUTPUT_FILE"
-sed -i "s/{{DB_USER}}/$DB_USER/" "$OUTPUT_FILE"
-sed -i "s/{{DB_PASS}}/$DB_PASS/" "$OUTPUT_FILE"
-echo "Config file generated: $OUTPUT_FILE"
+Step 3: Commit the Changes
+"Next, we create a commit, which is like saving a snapshot of your work with a message that explains what you changed.
+Run:*
+git commit -m "Meaningful commit message"
+Use a clear message like ‘Updated API config’ or ‘Refactored login module’."
 
+Step 4: Push to Azure DevOps
+"Now we push the committed changes to your Azure DevOps repository.
+Use:*
+git push
+If this is your first time pushing a new branch to ADO, Git may ask to set the upstream. It will show a command like:
+git push --set-upstream origin feature/my-feature
+Run that once. Next time, just git push is enough."
 
-# === STEP 3: Generate environment summary using awk ===
-echo "Generating summary report..."
+Step 5: Sign-in or Provide Credentials (if required)
+*"If you haven't configured authentication already, Azure DevOps will prompt you for credentials.
+Enter your ADO username and your Personal Access Token (PAT) as the password.
+If you're using Git Credential Manager, it may open a login window — just sign in with your ADO account."*
 
-awk -F= '{ printf "- %s = %s\n", $1, $2 }' "$ENV_FILE" > "$REPORT_FILE"
-echo "--- End of Summary ---" >> "$REPORT_FILE"
-echo "Summary written to: $REPORT_FILE"
+Step 6: Verify in Azure DevOps
+"Once the push is complete, open your Azure DevOps project → Repos → Files.
+You will see your updated files and commit history.
+This confirms that your code is successfully pushed to ADO and available for your team."
 
-
-emerg1@uklvadsb0159[DEV][~] $ cat config.json
-{
-    "app": "CoolApp",
-    "port": "8080",
-    "database": {
-      "user": "devuser",
-      "password": "secret123"
-    }
-  }
-
-emerg1@uklvadsb0159[DEV][~] $ cat env_summary.txt
-- APP_NAME = CoolApp
-- PORT = 8080
-- DB_USER = devuser
-- DB_PASS = secret123
--  =
---- End of Summary ---
+Outro
+"That's it! You’ve learned how to stage, commit, and push code to Azure DevOps using Git. These steps are essential for everyday development workflows.
+Thank you for watching, and stay tuned for the next topic!"
 

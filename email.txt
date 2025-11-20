@@ -1,31 +1,13 @@
-Creating a Pull Request (PR)
-1.	Before Creating PR:
-o	Ensure your commits are "neat" by rebasing if necessary
-o	Make necessary changes to the azure_pipeline.yml file for your project
-2.	Create the PR:
-o	Go to the "Repos" section in ADO
-o	Select "Pull Requests" and click "New Pull Request"
-o	Fill in the required fields:
-	Source branch (your feature branch)
-	Target branch (usually develop or release branch)
-	Title and description
-	Add reviewers
-o	Click "Create"
-3.	PR Validation Checks:
-o	The PR will trigger an automatic build process using the azure_pipeline.yml file
-o	Code must pass security checks, code leak detection, code quality checks, etc.
-o	PR must have a linked work item
-o	PR must have a successful CI build
-4.	Review and Approval:
-o	Mandatory App Dev Lead (ADO-appID-Engineer-review) review and approval is required
-o	Peer review is performed by the App Dev Lead
-5.	Complete the PR:
-o	Once approved, click "Set auto-complete" and "Complete"
-o	Your changes will be merged into the target branch
-Important Policies
-•	Direct commits to protected branches are not allowed
-•	All changes to protected branches must go through the PR process
-•	PRs require linked work items
-•	PRs require successful build validation
-•	PRs require mandatory reviewer approval (maker-checker policy)
-This branching strategy follows the GitFlow model, ensuring code quality and proper version control throughout the development lifecycle.
+“In this video, we’ll see how to create a Pull Request from a feature branch to the develop branch in Azure DevOps.”
+
+“Before raising the PR, make sure your commits are clean and make any required updates to the azure_pipeline.yml file.”
+
+“Next, go to Repos → Pull Requests → New Pull Request. Select your feature branch as the source, develop as the target, add a clear title and description, and assign reviewers.”
+
+“Once the PR is created, Azure DevOps automatically runs validation checks — including the CI build defined through azure_pipeline.yml, code quality checks, security scans, and work-item linking.”
+
+“A mandatory App Dev Lead reviewer must approve the PR. Only after all checks pass and reviews are completed can the PR be merged.”
+
+“Finally, click Set Auto-Complete or Complete to merge the feature branch into develop.”
+
+“All protected branches follow this PR process, ensuring code quality, traceability, and compliance with GitFlow standards.”

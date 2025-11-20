@@ -11,3 +11,36 @@
 “Finally, click Set Auto-Complete or Complete to merge the feature branch into develop.”
 
 “All protected branches follow this PR process, ensuring code quality, traceability, and compliance with GitFlow standards.”
+
+
+📌 Learning Overview (Intro Slide)
+
+In this module, you will learn:
+
+✔️ How to create a Pull Request from a feature branch to the develop branch
+
+✔️ What to check before raising a PR (clean commits & pipeline updates)
+
+✔️ How to fill PR details and assign reviewers in Azure DevOps
+
+✔️ How PR validation works (CI build, security, quality checks, work-item linking)
+
+✔️ How approvals work for protected branches
+
+✔️ How to complete and merge a PR following GitFlow standards
+
+📌 Summary (Ending Slide)
+
+We completed the PR workflow by:
+
+✔️ Preparing clean commits and updating the pipeline file
+
+✔️ Creating a PR from feature → develop
+
+✔️ Running automated validations in Azure DevOps
+
+✔️ Getting mandatory App Dev Lead approval
+
+✔️ Completing the PR and merging the changes
+
+✔️ Following protected-branch policies and GitFlow process

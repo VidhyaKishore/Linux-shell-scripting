@@ -44,3 +44,26 @@ We completed the PR workflow by:
 ✔️ Completing the PR and merging the changes
 
 ✔️ Following protected-branch policies and GitFlow process
+
+
+“Welcome to this lesson. In this video, we’ll learn how to pull the latest code from a remote repository into our local machine.”
+
+“Before we begin, make sure you are inside your project folder using the terminal.”
+
+“First, check which branch you are currently on by running:
+git status
+This helps confirm that you are working in the correct branch before pulling updates.”
+
+“Next, we fetch the latest changes from the remote repository using:
+git fetch
+Fetch does not modify your code. It only downloads the latest updates so you can review them.”
+
+“Now, to bring those changes into your working branch, use:
+git pull
+This command fetches and merges the latest updates from the remote branch into your local branch.”
+
+“If your local files and remote files don’t have conflicts, Git will automatically merge the changes and update your working directory.”
+
+“Once the pull is complete, you can verify the updated files using git log or by checking the modified files directly in your editor.”
+
+“And that’s it! You have successfully pulled the latest code from the remote repository and synced your local branch.”

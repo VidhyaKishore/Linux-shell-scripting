@@ -1,45 +1,31 @@
-Intro
-"In this video, we will learn how to commit your changes and push them to an Azure DevOps Git repository. Let’s begin."
-
-Step 1: Check Your Changes
-"First, let’s check what files have been modified in our working directory.
-Run:*
-git status
-Any modified files will be shown in red. These files are not yet staged for commit."
-
-Step 2: Stage the Files
-"Before committing, we need to stage the changes.
-You can stage a specific file:*
-git add filename
-Or stage everything at once:
-git add .
-After staging, run git status again — now the files will appear in green, which means they are ready for commit."
-
-Step 3: Commit the Changes
-"Next, we create a commit, which is like saving a snapshot of your work with a message that explains what you changed.
-Run:*
-git commit -m "Meaningful commit message"
-Use a clear message like ‘Updated API config’ or ‘Refactored login module’."
-
-Step 4: Push to Azure DevOps
-"Now we push the committed changes to your Azure DevOps repository.
-Use:*
-git push
-If this is your first time pushing a new branch to ADO, Git may ask to set the upstream. It will show a command like:
-git push --set-upstream origin feature/my-feature
-Run that once. Next time, just git push is enough."
-
-Step 5: Sign-in or Provide Credentials (if required)
-*"If you haven't configured authentication already, Azure DevOps will prompt you for credentials.
-Enter your ADO username and your Personal Access Token (PAT) as the password.
-If you're using Git Credential Manager, it may open a login window — just sign in with your ADO account."*
-
-Step 6: Verify in Azure DevOps
-"Once the push is complete, open your Azure DevOps project → Repos → Files.
-You will see your updated files and commit history.
-This confirms that your code is successfully pushed to ADO and available for your team."
-
-Outro
-"That's it! You’ve learned how to stage, commit, and push code to Azure DevOps using Git. These steps are essential for everyday development workflows.
-Thank you for watching, and stay tuned for the next topic!"
-
+Creating a Pull Request (PR)
+1.	Before Creating PR:
+o	Ensure your commits are "neat" by rebasing if necessary
+o	Make necessary changes to the azure_pipeline.yml file for your project
+2.	Create the PR:
+o	Go to the "Repos" section in ADO
+o	Select "Pull Requests" and click "New Pull Request"
+o	Fill in the required fields:
+	Source branch (your feature branch)
+	Target branch (usually develop or release branch)
+	Title and description
+	Add reviewers
+o	Click "Create"
+3.	PR Validation Checks:
+o	The PR will trigger an automatic build process using the azure_pipeline.yml file
+o	Code must pass security checks, code leak detection, code quality checks, etc.
+o	PR must have a linked work item
+o	PR must have a successful CI build
+4.	Review and Approval:
+o	Mandatory App Dev Lead (ADO-appID-Engineer-review) review and approval is required
+o	Peer review is performed by the App Dev Lead
+5.	Complete the PR:
+o	Once approved, click "Set auto-complete" and "Complete"
+o	Your changes will be merged into the target branch
+Important Policies
+•	Direct commits to protected branches are not allowed
+•	All changes to protected branches must go through the PR process
+•	PRs require linked work items
+•	PRs require successful build validation
+•	PRs require mandatory reviewer approval (maker-checker policy)
+This branching strategy follows the GitFlow model, ensuring code quality and proper version control throughout the development lifecycle.

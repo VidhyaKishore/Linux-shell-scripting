@@ -1,5 +1,16 @@
-Throughout the year, I have contributed significantly to strengthening engineering capability across the organisation. I delivered 72 ILT sessions with high learner satisfaction and trained over 1900 participants across Campus, Apprenticeship, JTP, and DEP programs. I introduced new courses such as Linux Shell Scripting and HashiCorp Vault, refreshed the Azure Foundation content, and collaborated with SMEs to design impactful learning experiences.
+“Welcome to this module.
+In this video, we’ll learn how to pull the latest code from a remote branch into your local machine.
 
-I managed ADO repos and user access for multiple cohorts, supported assessments and engagement activities, and hosted 10+ TechTalks to drive knowledge sharing. I also contributed to the ADO digital course and delivered a high-quality HashiCorp Vault masterclass in Malaysia. Additionally, I improved learning pathways, identified skill gaps, and ensured high standards in both ILT and digital learning initiatives.
+Before starting, make sure you are inside your project folder.
+Now, open your terminal and verify your current branch by running git branch.
+If you need to switch to the branch you want to update, use git checkout branch-name.
 
-Overall, I consistently supported organisational growth, enhanced learning quality, and demonstrated strong collaboration across programs and teams.
+Once you are on the correct branch, run the command git pull.
+This pulls the latest changes from the remote repository and merges them into your local branch.
+
+If your local branch is tracking a specific remote branch, Git will automatically pull from that branch.
+Otherwise, you can pull explicitly using git pull origin branch-name.
+
+After the pull completes, your local workspace will have the latest code, ensuring you're fully up to date before continuing your development work.
+
+That’s it — you’ve successfully fetched and merged the latest updates from your remote branch.”

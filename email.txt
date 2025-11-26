@@ -1,29 +1,5 @@
-Better Together
+Throughout the year, I have contributed significantly to strengthening engineering capability across the organisation. I delivered 72 ILT sessions with high learner satisfaction and trained over 1900 participants across Campus, Apprenticeship, JTP, and DEP programs. I introduced new courses such as Linux Shell Scripting and HashiCorp Vault, refreshed the Azure Foundation content, and collaborated with SMEs to design impactful learning experiences.
 
-Partnered with SMEs to design and improve courses.
+I managed ADO repos and user access for multiple cohorts, supported assessments and engagement activities, and hosted 10+ TechTalks to drive knowledge sharing. I also contributed to the ADO digital course and delivered a high-quality HashiCorp Vault masterclass in Malaysia. Additionally, I improved learning pathways, identified skill gaps, and ensured high standards in both ILT and digital learning initiatives.
 
-Hosted multiple TechTalks and shared recordings for team learning.
-
-Supported Campus, Apprenticeship, JTP, and DEP programs, including repo setup, assessments, and engagement activities.
-
-Enabled smooth collaboration by managing ADO users and repositories across batches.
-
-2️⃣ Fit for Growth
-
-Delivered 72 ILT sessions with a 92% satisfaction score, training 1900+ participants.
-
-Launched new courses and updated existing ones (Azure, Linux, Vault, etc.).
-
-Strengthened organisational learning pathways and supported scaling of talent programs.
-
-Managed AWS voucher allocation to support continuous upskilling.
-
-3️⃣ Never Settle
-
-Continuously improved course material with hands-on exercises and updated content.
-
-Identified skill gaps and developed new learning programs.
-
-Contributed to ADO digital course creation and DEP cohort mentoring.
-
-Led a high-quality HashiCorp Vault masterclass and maintained high standards across all Academy activities.
+Overall, I consistently supported organisational growth, enhanced learning quality, and demonstrated strong collaboration across programs and teams.

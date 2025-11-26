@@ -1,65 +1,29 @@
-New and innovative learning programs to foster engineering culture.
-New skill set added & training delivered on the following courses
--	Ansible essentials
--	Fundamentals of containerization
--	Introduction to Kafka
--	Azure foundation
--	Linux essentials
--	Git essentials
--	Terraform foundation
--	Terraform with Azure
-Junior Talent Program
--	Delivered ADO Repo session in the Junior Talent Program for 300+ participants
-Learning pathways in SBO
--	Contributed to fixing learning pathways in SBO
-TechTalk Hosting 
--	10 TechTalks hosted as per the TechTalk calendar.
--	Captured the session for future reference, training, and knowledge sharing.
--	Arranged virtual platforms, and necessary resources.
-Masterclass 
--	Ensure seamless logistics, including venue, materials and technical setup.
--	Identified and engaged subject matter experts as speaker.
--	01 Masterclass was done on the topic “HashiCorp vault secrets” was conducted in Malaysia for 50+ participants.
-Managing ADO users for SC Academy Org
--	Managed ADO Users creation for Campus boot camp, Apprenticeship batch 1 & 2 and for the VILT training needs. 
-Handling AWS voucher  
--	AWS voucher extraction and allocation to the SCB employees
--	Managing and updating the AWS voucher tracker 
+Better Together
 
-Quality, efficiency and productivity (individual and team) 
--	72 ILT sessions delivered.
--	92% of average satisfaction score for the score for the VLIT sessions (TTO and Ops).
--	1900 participants have been trained so far including DEP Cohort -1, apprenticeship, Campus boot camp & junior talent program participants.
--	Facilitated Kafka introduction waitlisted classes based on the demand.
+Partnered with SMEs to design and improve courses.
 
-Campus, early career and new hire engagement improvements and scaling (increased intake, curriculum update, rotation)
-Manage Campus Induction Program in Chennai 
--	Managed ADO repos for Class Denali in campus induction program 
--	Conducted Fun Friday
--	Conducted Agile game day
--	Supported in assessment and feedback
-Manage Apprenticeship Program in Chennai
--	Managed ADO Repos for class Rhone in batch 01
--	Managed ADO Repos for class Rhone & Lambert in batch 02
--	Conducted Fun Friday
--	Supported in assessment and feedback
+Hosted multiple TechTalks and shared recordings for team learning.
 
-Maintain high quality and standards of all Academy activities such as ILT, Digital, Communities and cohort-based programs.
-DEP Cohort -1 Program
--	Plan, design and develop DEP cohort program 
--	Training delivered for DEP cohort program
--	Review and mentored 10+ cohort projects
--	Conducted DOJO K8S session
--	Manage connect sessions, assessments & artifacts
-ADO Digital course
--	Contributed to the ADO digital course on repositories.
-Contribute to code commits for engineering upliftment.
-Identified skill gap and learning requirement.
--	2 New courses launched (Linux Shell Scripting and Hashicorp Vaulting)
--	Working closely with the SMEs to design and develop new courses
-Structured course modules, objectives, and learning outcomes.
--	Revamped Azure foundation course material with the latest industry trends and best practices.
--	Assessing existing course content for relevance and effectiveness.
-Developed engaging materials including presentation and hands on exercises.
-Update ECP skills and status and add individual aspirations for growth (skills)
--	Updated ECP skills for containerization, cloud, Linux and Ansible. 
+Supported Campus, Apprenticeship, JTP, and DEP programs, including repo setup, assessments, and engagement activities.
+
+Enabled smooth collaboration by managing ADO users and repositories across batches.
+
+2️⃣ Fit for Growth
+
+Delivered 72 ILT sessions with a 92% satisfaction score, training 1900+ participants.
+
+Launched new courses and updated existing ones (Azure, Linux, Vault, etc.).
+
+Strengthened organisational learning pathways and supported scaling of talent programs.
+
+Managed AWS voucher allocation to support continuous upskilling.
+
+3️⃣ Never Settle
+
+Continuously improved course material with hands-on exercises and updated content.
+
+Identified skill gaps and developed new learning programs.
+
+Contributed to ADO digital course creation and DEP cohort mentoring.
+
+Led a high-quality HashiCorp Vault masterclass and maintained high standards across all Academy activities.

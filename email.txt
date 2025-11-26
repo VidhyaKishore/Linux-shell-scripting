@@ -1,69 +1,65 @@
-“In this video, we’ll see how to create a Pull Request from a feature branch to the develop branch in Azure DevOps.”
+New and innovative learning programs to foster engineering culture.
+New skill set added & training delivered on the following courses
+-	Ansible essentials
+-	Fundamentals of containerization
+-	Introduction to Kafka
+-	Azure foundation
+-	Linux essentials
+-	Git essentials
+-	Terraform foundation
+-	Terraform with Azure
+Junior Talent Program
+-	Delivered ADO Repo session in the Junior Talent Program for 300+ participants
+Learning pathways in SBO
+-	Contributed to fixing learning pathways in SBO
+TechTalk Hosting 
+-	10 TechTalks hosted as per the TechTalk calendar.
+-	Captured the session for future reference, training, and knowledge sharing.
+-	Arranged virtual platforms, and necessary resources.
+Masterclass 
+-	Ensure seamless logistics, including venue, materials and technical setup.
+-	Identified and engaged subject matter experts as speaker.
+-	01 Masterclass was done on the topic “HashiCorp vault secrets” was conducted in Malaysia for 50+ participants.
+Managing ADO users for SC Academy Org
+-	Managed ADO Users creation for Campus boot camp, Apprenticeship batch 1 & 2 and for the VILT training needs. 
+Handling AWS voucher  
+-	AWS voucher extraction and allocation to the SCB employees
+-	Managing and updating the AWS voucher tracker 
 
-“Before raising the PR, make sure your commits are clean and make any required updates to the azure_pipeline.yml file.”
+Quality, efficiency and productivity (individual and team) 
+-	72 ILT sessions delivered.
+-	92% of average satisfaction score for the score for the VLIT sessions (TTO and Ops).
+-	1900 participants have been trained so far including DEP Cohort -1, apprenticeship, Campus boot camp & junior talent program participants.
+-	Facilitated Kafka introduction waitlisted classes based on the demand.
 
-“Next, go to Repos → Pull Requests → New Pull Request. Select your feature branch as the source, develop as the target, add a clear title and description, and assign reviewers.”
+Campus, early career and new hire engagement improvements and scaling (increased intake, curriculum update, rotation)
+Manage Campus Induction Program in Chennai 
+-	Managed ADO repos for Class Denali in campus induction program 
+-	Conducted Fun Friday
+-	Conducted Agile game day
+-	Supported in assessment and feedback
+Manage Apprenticeship Program in Chennai
+-	Managed ADO Repos for class Rhone in batch 01
+-	Managed ADO Repos for class Rhone & Lambert in batch 02
+-	Conducted Fun Friday
+-	Supported in assessment and feedback
 
-“Once the PR is created, Azure DevOps automatically runs validation checks — including the CI build defined through azure_pipeline.yml, code quality checks, security scans, and work-item linking.”
-
-“A mandatory App Dev Lead reviewer must approve the PR. Only after all checks pass and reviews are completed can the PR be merged.”
-
-“Finally, click Set Auto-Complete or Complete to merge the feature branch into develop.”
-
-“All protected branches follow this PR process, ensuring code quality, traceability, and compliance with GitFlow standards.”
-
-
-📌 Learning Overview (Intro Slide)
-
-In this module, you will learn:
-
-✔️ How to create a Pull Request from a feature branch to the develop branch
-
-✔️ What to check before raising a PR (clean commits & pipeline updates)
-
-✔️ How to fill PR details and assign reviewers in Azure DevOps
-
-✔️ How PR validation works (CI build, security, quality checks, work-item linking)
-
-✔️ How approvals work for protected branches
-
-✔️ How to complete and merge a PR following GitFlow standards
-
-📌 Summary (Ending Slide)
-
-We completed the PR workflow by:
-
-✔️ Preparing clean commits and updating the pipeline file
-
-✔️ Creating a PR from feature → develop
-
-✔️ Running automated validations in Azure DevOps
-
-✔️ Getting mandatory App Dev Lead approval
-
-✔️ Completing the PR and merging the changes
-
-✔️ Following protected-branch policies and GitFlow process
-
-
-“Welcome to this lesson. In this video, we’ll learn how to pull the latest code from a remote repository into our local machine.”
-
-“Before we begin, make sure you are inside your project folder using the terminal.”
-
-“First, check which branch you are currently on by running:
-git status
-This helps confirm that you are working in the correct branch before pulling updates.”
-
-“Next, we fetch the latest changes from the remote repository using:
-git fetch
-Fetch does not modify your code. It only downloads the latest updates so you can review them.”
-
-“Now, to bring those changes into your working branch, use:
-git pull
-This command fetches and merges the latest updates from the remote branch into your local branch.”
-
-“If your local files and remote files don’t have conflicts, Git will automatically merge the changes and update your working directory.”
-
-“Once the pull is complete, you can verify the updated files using git log or by checking the modified files directly in your editor.”
-
-“And that’s it! You have successfully pulled the latest code from the remote repository and synced your local branch.”
+Maintain high quality and standards of all Academy activities such as ILT, Digital, Communities and cohort-based programs.
+DEP Cohort -1 Program
+-	Plan, design and develop DEP cohort program 
+-	Training delivered for DEP cohort program
+-	Review and mentored 10+ cohort projects
+-	Conducted DOJO K8S session
+-	Manage connect sessions, assessments & artifacts
+ADO Digital course
+-	Contributed to the ADO digital course on repositories.
+Contribute to code commits for engineering upliftment.
+Identified skill gap and learning requirement.
+-	2 New courses launched (Linux Shell Scripting and Hashicorp Vaulting)
+-	Working closely with the SMEs to design and develop new courses
+Structured course modules, objectives, and learning outcomes.
+-	Revamped Azure foundation course material with the latest industry trends and best practices.
+-	Assessing existing course content for relevance and effectiveness.
+Developed engaging materials including presentation and hands on exercises.
+Update ECP skills and status and add individual aspirations for growth (skills)
+-	Updated ECP skills for containerization, cloud, Linux and Ansible. 

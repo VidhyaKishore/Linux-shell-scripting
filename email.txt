@@ -1,13 +1,26 @@
 #!/bin/bash
-PACKAGE="git"
-LOG_FILE="$HOME/git_install.log"
-echo "Installing '$PACKAGE'..." | tee "$LOG_FILE"
-# Step 1: Install the package
-sudo yum install -y "$PACKAGE" &>> "$LOG_FILE"
-# Step 2: Check the install status
-if rpm -q "$PACKAGE" &>/dev/null; then
-    echo "'$PACKAGE' installed successfully." | tee -a "$LOG_FILE"
-else
-    echo "Failed to install '$PACKAGE'. Check log: $LOG_FILE" | tee -a "$LOG_FILE"
-    exit 1
-fi
+SOURCE_DIR="/home/emerg1/sort"  # Change if needed
+EMPTY_DIR="$SOURCE_DIR/empty_files"
+NON_EMPTY_DIR="$SOURCE_DIR/non_empty_files"
+# Create destination directories if they don't exist
+mkdir -p "$EMPTY_DIR"
+mkdir -p "$NON_EMPTY_DIR"
+# Loop through files in the source directory
+for file in "$SOURCE_DIR"/*.txt; do
+        # Make sure it's a regular file
+    if [ -f "$file" ]; then
+            # skip if the file is in the empty or non empty folders already
+            if [[ "$file" == "$EMPTY_DIR/"* || "$file" == "$NON_EMPTY_DIR/"* ]]; then
+                    continue
+            fi
+         # -s checkes if the file is non-zero size
+        if [ ! -s "$file" ]; then
+            echo "Moving empty file: $file"
+            mv "$file" "$EMPTY_DIR/"
+        else
+            echo "Moving non-empty file: $file"
+            mv "$file" "$NON_EMPTY_DIR/"
+        fi
+    fi
+done
+echo "Sorting complete."

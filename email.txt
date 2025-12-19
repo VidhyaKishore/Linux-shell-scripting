@@ -1,34 +1,62 @@
 #!/bin/bash
-# File path
-CSV_FILE="/home/emerg1/data/sampledata.csv"
-LOG_FILE="/home/emerg1/data/orders_validation.log"
-EXPECTED_HEADER="orderdate,region,item,total"
-echo "Starting CSV validation: $CSV_FILE" > "$LOG_FILE"
+# Function to create folders and files
+create_project() {
+  mkdir -p "$1"/{css,js,images}
+  touch "$1"/index.html "$1"/css/style.css "$1"/js/app.js
+  echo "Project structure created in ./$1"
+}
 
-# 1. Check if file exists
-if [ ! -f "$CSV_FILE" ]; then
-    echo "Error: File not found at $CSV_FILE!" | tee -a "$LOG_FILE"
-    exit 1
+# Function to initialize git repo (no commit)
+init_git() {
+  cd "$1" || exit
+  git init > /dev/null 2>&1
+  touch README.md
+  git add . > /dev/null 2>&1
+  echo "Git repo initialized (no commit)"
+}
+# Main script
+read -p "Enter project name: " name
+if [ -z "$name" ]; then
+  echo "Project name is required."
+  exit 1
 fi
-# 2. Validate header
-header=$(head -n 1 "$CSV_FILE")
-if [ "$header" != "$EXPECTED_HEADER" ]; then
-    echo "Header mismatch!" | tee -a "$LOG_FILE"
-    echo "Expected: $EXPECTED_HEADER" | tee -a "$LOG_FILE"
-    echo "Found:    $header" | tee -a "$LOG_FILE"
-else
-    echo "Header is valid: $header" | tee -a "$LOG_FILE"
+create_project "$name"
+init_git "$name"
+echo "Setup complete for '$name'"
+----------------------------------
+
+#!/bin/bash
+ENV_FILE=".env"
+TEMPLATE_FILE="config.template.json"
+OUTPUT_FILE="config.json"
+REPORT_FILE="env_summary.txt"
+echo "Setting up development environment..."
+
+# === STEP 1: Load environment values ===
+if [ ! -f "$ENV_FILE" ]; then
+  echo ".env file not found!"
+  exit 1
 fi
-# 3. Count total rows excluding header
-row_count=$(tail -n +2 "$CSV_FILE" | wc -l)
-echo "Total data rows: $row_count" | tee -a "$LOG_FILE"
-# 4. Check each row for empty fields
-echo "Checking for rows with missing fields..." >> "$LOG_FILE"
-line_num=1
-while IFS=',' read -r orderdate region item total; do
-    ((line_num++))
-    if [[ -z "$orderdate" || -z "$region" || -z "$item" || -z "$total" ]]; then
-        echo "Missing field at line $line_num: [$orderdate, $region, $item, $total]" >> "$LOG_FILE"
-    fi
-done < <(tail -n +2 "$CSV_FILE")
-echo "Validation completed. Check the log: $LOG_FILE"
+
+# Using grep to extract values
+APP_NAME=$(grep "^APP_NAME=" "$ENV_FILE" | cut -d'=' -f2)
+PORT=$(grep "^PORT=" "$ENV_FILE" | cut -d'=' -f2)
+DB_USER=$(grep "^DB_USER=" "$ENV_FILE" | cut -d'=' -f2)
+DB_PASS=$(grep "^DB_PASS=" "$ENV_FILE" | cut -d'=' -f2)
+
+# === STEP 2: Replace placeholders in template using sed ===
+cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
+sed -i "s/{{APP_NAME}}/$APP_NAME/" "$OUTPUT_FILE"
+sed -i "s/{{PORT}}/$PORT/" "$OUTPUT_FILE"
+sed -i "s/{{DB_USER}}/$DB_USER/" "$OUTPUT_FILE"
+sed -i "s/{{DB_PASS}}/$DB_PASS/" "$OUTPUT_FILE"
+echo "Config file generated: $OUTPUT_FILE"
+
+
+# === STEP 3: Generate environment summary using awk ===
+echo "Generating summary report..."
+
+awk -F= '{ printf "- %s = %s\n", $1, $2 }' "$ENV_FILE" > "$REPORT_FILE"
+echo "--- End of Summary ---" >> "$REPORT_FILE"
+echo "Summary written to: $REPORT_FILE"
+

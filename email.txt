@@ -1,34 +1,20 @@
-#!/bin/bash
-ENV_FILE=".env"
-TEMPLATE_FILE="config.template.json"
-OUTPUT_FILE="config.json"
-REPORT_FILE="env_summary.txt"
-echo "Setting up development environment..."
-
-# === STEP 1: Load environment values ===
-if [ ! -f "$ENV_FILE" ]; then
-  echo ".env file not found!"
-  exit 1
-fi
-
-# Using grep to extract values
-APP_NAME=$(grep "^APP_NAME=" "$ENV_FILE" | cut -d'=' -f2)
-PORT=$(grep "^PORT=" "$ENV_FILE" | cut -d'=' -f2)
-DB_USER=$(grep "^DB_USER=" "$ENV_FILE" | cut -d'=' -f2)
-DB_PASS=$(grep "^DB_PASS=" "$ENV_FILE" | cut -d'=' -f2)
-
-# === STEP 2: Replace placeholders in template using sed ===
-cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
-sed -i "s/{{APP_NAME}}/$APP_NAME/" "$OUTPUT_FILE"
-sed -i "s/{{PORT}}/$PORT/" "$OUTPUT_FILE"
-sed -i "s/{{DB_USER}}/$DB_USER/" "$OUTPUT_FILE"
-sed -i "s/{{DB_PASS}}/$DB_PASS/" "$OUTPUT_FILE"
-echo "Config file generated: $OUTPUT_FILE"
-
-
-# === STEP 3: Generate environment summary using awk ===
-echo "Generating summary report..."
-
-awk -F= '{ printf "- %s = %s\n", $1, $2 }' "$ENV_FILE" > "$REPORT_FILE"
-echo "--- End of Summary ---" >> "$REPORT_FILE"
-echo "Summary written to: $REPORT_FILE"
+1. A typical Software Development Process
+2. Before DevOps, software teams struggled to keep up with business speed.
+3. What is Devops/DevSecOps?
+4. DevOps Principles
+5. DevOps Stages & CI/CD Pipeline
+6. What is a CI/CD Pipeline?
+7. What is ADO?
+8. Main Components of Azure DevOps
+9. ADO overall Architecture
+10. How ADO Organizes? - projects & teams
+11. Understanding SCB way of building & delivering Software - Hive & Chapter
+12. Process with in SCB - CDS(Change delivery standards & ESDLC)
+13. Flow of Work Taxonomy - Clarity - ADO - Tableau
+14. ADO Process Template - layout, states, rules , backlogs 
+15. How ADO organises works? area path explained here
+16. ADO low level diagram discussed 
+17. Boards hands on - Create work item, user story, tasks 
+18. ADO Repos - explanation 
+19. ADO Repos handson - Create sample code and push to ADO
+20. Overview on CI from pipeline.

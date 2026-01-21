@@ -1,20 +1,746 @@
-1. A typical Software Development Process
-2. Before DevOps, software teams struggled to keep up with business speed.
-3. What is Devops/DevSecOps?
-4. DevOps Principles
-5. DevOps Stages & CI/CD Pipeline
-6. What is a CI/CD Pipeline?
-7. What is ADO?
-8. Main Components of Azure DevOps
-9. ADO overall Architecture
-10. How ADO Organizes? - projects & teams
-11. Understanding SCB way of building & delivering Software - Hive & Chapter
-12. Process with in SCB - CDS(Change delivery standards & ESDLC)
-13. Flow of Work Taxonomy - Clarity - ADO - Tableau
-14. ADO Process Template - layout, states, rules , backlogs 
-15. How ADO organises works? area path explained here
-16. ADO low level diagram discussed 
-17. Boards hands on - Create work item, user story, tasks 
-18. ADO Repos - explanation 
-19. ADO Repos handson - Create sample code and push to ADO
-20. Overview on CI from pipeline.
+A typical Software Development Process
+--------------------------------------
+“Software is not built in one shot. It is built step by step, just like planning, cooking, tasting, serving, and improving a recipe.”
+
+Let take this a example that “Bank wants to improve its Mobile Banking Application”
+
+1️⃣ Business Need – Why does the bank need software?
+- Every banking software starts with a business problem faced by the bank or customers.
+
+  Example:
+- “Customers are standing in long queues just to check balance or transfer money.”
+
+- Business Need:
+👉 A mobile banking app to reduce branch visits and improve customer experience.
+
+- If the bank does not have a problem to solve, there is no software to build.
+
+2️⃣ Requirement Understanding – “What exactly is needed?”
+
+- Here the IT team talks to bank users, branch staff, and business teams to understand what the software must do.
+
+Bank discussions include:
+
+Should customers check balance using mobile app?
+
+Should fund transfer need OTP?
+
+How many steps should a transaction take?
+
+Should it work even with slow internet?
+
+- “If we misunderstand the requirement, customers will reject the app.”
+
+- “Wrong understanding = wrong banking app, even if coding is perfect.”
+
+3️⃣ Architecture & Design – "How will the banking app work internally?"
+
+Simple explanation:
+This is the blueprint of the work before development starts.
+
+In banking software:
+
+Mobile App ↔ Bank Server ↔ Core Banking System
+
+Where customer data is stored
+
+How transactions are secured
+
+Key point:
+👉 Good design avoids security issues and system failures later.
+
+4️⃣ Development & Testing – Build and verify together
+
+What happens here:
+
+Developers build features like login, balance check, fund transfer
+
+Testers immediately test:
+
+Wrong PIN
+
+Network failure
+
+Duplicate transactions
+
+Atypical part:
+Development and testing happen in parallel, not separately.
+
+Trainer line:
+“In banking, even a small error can cause big financial loss.”
+
+5️⃣ Release – “Give it to customers”
+
+Simple explanation:
+Once ready, the banking software is released carefully to customers.
+
+Bank Examples:
+
+Mobile banking app released in Play Store / App Store
+
+New feature enabled for selected customers first
+
+Key idea:
+Banks often release in phases to reduce risk.
+👉 Release does NOT mean the work is finished.
+
+6️⃣ Monitoring & Feedback – Observe customers and improve
+
+After release, the bank continuously:
+Monitors transactions
+Checks system performance
+Collects customer feedback
+
+Bank Examples:
+App is slow during salary days
+Transactions failing at night
+Customers request fingerprint login
+
+Result:
+Changes go back into requirements again.
+
+Trainer line:
+“Banking software keeps improving based on real customer usage.”
+
+Need of the Hour”
+-----------------
+
+Before DevOps, software teams struggled to keep up with business speed.
+
+Business keeps changing what it wants.
+- Requirements changed after development started
+- Teams followed rigid processes
+- Any small change meant rework
+
+Making a small change took a long time.
+- Manual coding, testing, and deployment
+- Testing happened only at the end
+- Releases were infrequent
+
+Processes were too rigid and outdated.
+- Heavy documentation
+- Too many approvals
+- No automation
+
+Teams worked separately instead of together.
+- Developers wrote code
+- Operations managed servers
+- Testers worked at the end
+
+Many other issues 
+- Manual deployments caused errors
+- No real-time monitoring
+- Slow customer feedback
+- Scaling infrastructure was painful
+
+Impact:
+❌ Delays
+❌ Slow delivery
+❌ Bugs found late
+❌ Missed business deadlines
+❌ Poor collaboration
+❌ ‘Works on my machine’ issues
+❌ Unhappy customers
+❌ Unstable systems
+
+All these challenges made it clear that the old way of working was not enough. DevOps was the answer to speed, quality, and collaboration.
+
+What is Devops?
+-------------------------
+
+DevOps = Development + Operations working together as one team
+
+DevOps is a way of working where:
+Software is built faster
+Errors are reduced
+Teams collaborate instead of blaming each other
+Developers, Operations, and Testers work together
+Automation is used
+Feedback is continuous
+
+which results in:
+✅ Faster releases
+✅ Stable banking systems
+✅ Happier customers
+
+Key Goals of DevOps 
+
+Speed – Faster delivery of banking features
+Quality – Fewer failures and rollbacks
+Collaboration – One team, one goal
+Reliability – Systems available 24×7
+
+DevOps Principles
+-----------------
+“DevOps is not a tool or a role. It is a way of working based on a few simple principles.”
+
+1️⃣ Collaboration – Work as One Team
+What it means:
+Developers, Operations, Testing, and Security work together, not separately.
+Why it matters:
+✅ Faster issue resolution
+
+2️⃣ Automation – Reduce Manual Work
+What it means:
+Use automation for:
+Testing
+Deployment
+Infrastructure setup
+
+Why it matters:
+✅ Faster & reliable releases
+
+3️⃣ Continuous Integration – Small changes happen often
+What it means:
+Code changes are added frequently, not in big chunks.
+
+Why it matters:
+✅ Easy fixes
+
+4️⃣ Continuous Testing – Quality at Every Step
+What it means:
+Testing happens throughout, not only at the end.
+Why it matters:
+✅ Stable systems
+
+5️⃣ Continuous Delivery / Deployment – Always Ready to Release
+What it means:
+Software is always in a ready-to-release state.
+Why it matters:
+✅ Faster time-to-market
+
+6️⃣ Monitoring & Feedback – Observe and Improve
+What it means:
+Track performance, errors, and customer feedback.
+Why it matters:
+✅ Quick fixes
+
+7️⃣ Security by Design (DevSecOps Principle)
+What it means:
+Security is included from the beginning, not added later.
+Why it matters:
+✅ Compliance & trust
+
+DevOps Principles = Collaboration + Automation + Continuous Improvement by doing CI/CD
+
+DevOps Stages & CI/CD Pipeline
+------------------------------
+DevOps breaks software delivery into simple stages and connects them using a CI/CD pipeline.
+
+1️⃣ Plan – What are we going to build?
+- Business needs are discussed
+- Features are planned
+
+2️⃣ Code – Build the feature
+- Developers write code
+- Small changes are made frequently
+
+3️⃣ Build – Prepare the software
+- Code is compiled and packaged
+- Ready for testing
+
+4️⃣ Test – Check quality and safety
+- Automated tests run
+- Functional and security checks
+
+5️⃣ Release – Approve for production
+- Software is approved
+- Release decision is taken
+
+6️⃣ Deploy – Make it live
+- Software is deployed to production
+- Often done automatically
+
+7️⃣ Operate – Run the system
+- System is kept running 24×7
+- Performance is monitored
+
+8️⃣ Monitor & Feedback – Improve continuously
+- Errors and feedback collected
+- Improvements planned
+
+What is a CI/CD Pipeline?
+
+CI/CD is an automated pipeline that moves software safely and quickly from code to customers.
+
+CI – Continuous Integration
+What it means:
+- Code changes are merged frequently
+- Automated build and tests run
+
+Why it matters:
+✅ Early issue detection
+
+CD – Continuous Delivery / Deployment
+Continuous Delivery:
+- Software is always ready to release
+- Manual approval before production
+
+Continuous Deployment:
+Software goes automatically to production
+
+CI/CD Pipeline – Step-by-Step (Very Simple)
+- Developer updates code
+- Automated build runs
+- Automated tests run
+- Security checks happen
+- Approval given
+- Software deployed
+
+CI/CD helps banks release features faster, with fewer errors and stronger security.
+
+
+
+Agile vs Devops
+---------------
+
+Agile vs DevOps — Big Picture
+Simple one-line difference
+Agile → How we build software
+DevOps → How we build, release, and run software
+They are not competitors — DevOps extends Agile.
+
+Agile
+What is Agile?
+Agile is a software development approach that focuses on:
+Small, frequent deliveries
+Customer feedback
+Flexibility to change
+
+Key focus
+📋 Requirements
+🧑‍💻 Development
+🧪 Testing
+
+How it works
+Work is divided into sprints (2–3 weeks)
+Team delivers a working feature every sprint
+
+Bank example 🏦
+A bank wants a new loan application screen:
+Sprint 1: Basic form
+Sprint 2: Validation rules
+Sprint 3: Approval workflow
+
+👉 Agile ensures faster feature delivery
+
+DevOps
+What is DevOps?
+DevOps is a culture + practices that focuses on:
+Faster releases
+Stable systems
+Automation
+
+Key focus
+🚀 Deployment
+⚙️ Infrastructure
+📊 Monitoring & feedback
+
+How it works
+Automates build, test, deploy
+Dev & Ops teams work together
+
+Bank example 🏦
+Same loan application:
+Code is automatically built
+Tested
+Deployed to QA / UAT / Prod
+Monitored for failures
+👉 DevOps ensures faster & safer releases
+
+Agile vs DevOps (Side-by-Side)
+Aspect	Agile	DevOps
+Focus	Development	Development + Operations
+Goal	Build right product	Deliver & run product well
+Scope	Planning → Testing	Planning → Production
+Speed	Faster development	Faster deployment
+Automation	Optional	Mandatory
+Feedback	Customer feedback	System + user feedback
+
+
+What is Azure Devops?
+---------------------
+Azure DevOps (ADO) is a Microsoft tool that helps teams manage development projects from planning through deployment, all in one common platform.
+
+What do you mean by single platform - Azure DevOps brings everything into one place instead of using many tools.
+
+Why Banks Need Azure DevOps?
+“When many teams work on the same banking application, how do they stay organized and avoid mistakes?” - By using a single, common platform like Azure DevOps
+
+What Does Azure DevOps Do? (High Level)
+- Azure DevOps helps bank to:
+- Plan and track work clearly
+- Control and manage code changes
+- Test software before release
+- Release features faster and safely
+- Maintain audit and compliance
+
+“Azure DevOps brings speed with control—both are critical in banking.”
+
+Main Components of Azure DevOps
+-------------------------------
+
+1️⃣ Azure Boards – Planning & Tracking
+- Tracks tasks, bugs, and features throughout entire process.
+
+2️⃣ Azure Repos – Store Code Safely
+- Securely stores software code
+- Maintains full history of changes
+
+3️⃣ Azure Pipelines – Build, Test & Release
+- Automates build, testing, and deployment
+- Supports all natural languages and project types in CI/CD 
+
+4️⃣ Azure Test Plans – Quality Checking
+- Helps validate software quality before release both manual and automated 
+
+5️⃣ Azure Artifacts – Reusable Components
+- Stores approved, reusable software packages
+
+Dashboard & Wiki - Dashboard provides customizable interactive overview real time data and matrices related to a project team. Wiki's are primary used for documentation and knowledge sharing.  
+
+ADO overall Architecture
+------------------------
+
+“This diagram shows an end-to-end Azure DevOps CI/CD architecture — from a developer writing code to deploying it safely into Production.”
+
+Planning & Code Creation (Left side)
+🔹 Azure Boards – Planning
+Azure Boards is used in the planning stage of the SDLC to organize, track, and manage all work before and during development.
+The requirements for the application as added in the boards as work items. The work items are used to plan the sprints. Once the task lists are identified and allocated to the developers, The developers starts their activity by cloning the repository and creating a new branch to implement the new features. Once the features are developed they will push the changes to the repository and if required they will raise PR for approval. 
+
+“When code is pushed to Azure Repos, automation begins.”
+
+Continuous Integration (CI) – Build Pipeline
+
+In Continuous Integration, every code change is automatically checked by a build pipeline to ensure it is correct, safe, and ready for the next stage.
+A build pipeline can start automatically when a developer raises a Pull Request or manually when needed. This ensures every change is validated before moving forward.
+
+1️⃣ Get Source
+The first step is to get the source code. The pipeline pulls the latest approved code from Azure Repos so it always works on the most recent version.
+This avoids working on outdated or incorrect code.
+
+2️⃣ Install Tools
+Next, the pipeline prepares the environment by installing the required tools needed to build the application.
+
+This includes:
+Programming language tools like .NET, Java, or Node.js
+Required build agent tools
+“This ensures the build environment is consistent every time.”
+
+3️⃣ Build Solution
+“Now the actual build happens. The code is compiled to check whether it is technically correct.”
+What this catches:
+Syntax errors
+Missing dependencies
+Compilation issues
+“If the code cannot even compile, it should never move forward.”
+
+4️⃣ Run Tests
+“After compilation, the pipeline runs automated unit tests to verify that the code behaves as expected.”
+If any test fails, the pipeline stops immediately
+“This prevents faulty code from entering banking systems.”
+
+5️⃣ Package Artifacts
+“Once the code is built and tested successfully, the pipeline packages it into deployable formats.”
+ZIP files
+JAR / WAR files
+Docker images
+“This creates a ready-to-deploy version of the application.”
+
+6️⃣ Publish Artifacts
+“These packaged files are then published to a centralized repository such as Artifactory, where they are stored securely.”
+Same artifact is used across environments
+Ensures consistency and traceability
+“What we test is exactly what we deploy.”
+
+7️⃣ Run Security Tests
+“Before moving further, the pipeline performs automated security checks on the code.”
+This includes:
+Static code analysis
+Vulnerability scanning
+“This helps detect security risks early, which is critical in regulated environments like banks.”
+
+“The CI build pipeline automatically validates every code change to ensure quality, consistency, and security before deployment.”
+
+
+How ADO Organizes?
+“Azure DevOps is organized in a structured and hierarchical way so that teams, projects, and work are clearly separated and securely managed across the organization.
+At the top level, we have an Azure DevOps Organization. This represents the entire company or bank. All users, projects, and governance settings are managed at this level, ensuring centralized control and compliance, which is very important in a banking environment.
+Every user who are onboarded to the ADO has an access to SC-ADO which is linked with production. 
+
+Inside the organization, we create Projects. Each project usually represents one banking application or system. This helps in keeping work related to different applications separate and secure. 
+
+With in our organization an ADO projects for every Quartey performance review QPR will be created. QPR is a regular check in where key decision makers collaborate and make necessary changes to meet score cards goals and client needs. Creating projects based on QPR helps to track and priorities work effectively. 
+
+Within each project, we define Teams. Teams are groups of people working on specific functional areas of the application, such as payments, authentication, or reporting. This structure helps in better planning, clear ownership, and accountability.
+
+Inside these projects and teams, we use Azure DevOps tools for day-to-day work. Azure Boards, Repos, Pipelines & Artifacts.
+
+Applications are deployed across multiple environments such as Development, QA, and Production. The same build moves through these environments in a controlled manner, ensuring quality and stability at each stage.
+
+Access and permissions are tightly controlled across all levels. Not everyone can modify code, approve releases, or deploy to production. This role-based access ensures security, auditability, and regulatory compliance.
+
+Overall, this organized structure allows banks to work faster while maintaining control, security, and accountability.”
+
+----------------------------------------------------
+
+
+How ADO Organizes Work?
+----------------------
+We have multiple teams like DEV, Prod & QA. They have work very smoothly inside same azure devops without stepping toes of each other. 
+
+“In a bank, multiple teams work in parallel on the same application, such as payments, security, and customer onboarding.
+Teams ensure clarity, ownership, and controlled delivery.”
+“Teams avoid confusion when many people work on the same system.”
+
+“Each team in Azure DevOps has its own configuration and working view.”
+
+A team can have:
+Its own backlog view
+Its own boards
+Its own iterations or sprints
+Its own capacity planning
+“This allows teams to focus only on their work.”
+
+How do teams are created in ADO inside SCB org?
+Click on org -> SC-ado -> under projects -> ADO support -> new team request 
+
+If we need to create a team in ADO then we must raise a request with ADO support team. When a team is created an area path is also generated along with that process. 
+
+We will be having multiple teams who work on the same project so this area path defines who owns the particular work item. Area path will help us logically group work item based on team name. 
+
+Sc-ado -> Pick a project -> Project settings -> project configurations -> areas
+
+Areas are used to logically divide the project into smaller parts based on ownership, functionality, or responsibility.”
+“Areas tell us who owns which part of the application.”
+
+
+ADO low level diagram
+---------------------
+“This architecture shows how an enterprise uses Azure DevOps to manage Agile planning, secure development, quality checks, and CI pipelines in a single integrated flow.”
+
+“From requirement creation till code validation, everything is automated, governed, and secure.”
+
+What This Architecture Covers
+Agile planning using Azure Boards
+Secure coding using IDE & Git controls
+Peer reviews using Pull Requests
+
+In our Org every initiative begins in planning. Once an initiative is reviewed and approved the product own assigned started gathering detailed requirements. These requirements are then brought into ADO. The product owner breaks the requirement into manageable chucks of work such as Epics -> features -> user stories -> tasks -> subtasks. Big ideas are always delivered through small user stories.
+
+🔹 Product Backlog
+All user stories are stored in the Product Backlog
+This is the single source of truth
+Nothing gets developed outside the backlog
+“If it’s not in the backlog, it will not be built.” 
+
+🔹 Backlog Prioritization
+Stories are prioritized based on:
+Business value
+Risk
+Dependencies
+MVP (Minimum Viable Product) is identified
+“We always deliver value first, not everything at once.”
+
+🔹 Definition of Ready (DoR) & Definition of Done (DoD)
+Definition of Ready (DoR):
+Requirement is clear
+Estimated
+Testable
+Definition of Done (DoD):
+Code completed
+Tests passed
+Documentation done
+Security & quality checks cleared
+“Ready means we can start; Done means we can release.”
+
+🔹 Board Setup & Sprint Planning
+Teams choose:
+Kanban board or
+Sprint board
+Sprint cycles are finalized
+
+🔹 Shift-Left Testing
+Test team prepares test cases during planning
+Testing does not wait till the end
+“Quality does not start after coding; it starts during planning.”
+
+🔶 LAYER 2: DEVELOPMENT & SOURCE CONTROL (Middle Layer)
+2️⃣ Azure Repos – Source Control
+Code is stored in Git repositories
+Standard branching strategy:
+Main branch
+Feature branches
+develop branch
+
+🔹 Developer Workflow
+User story assigned to developer
+Developer creates a feature branch
+Code is developed locally using an IDE
+“Every change is isolated, controlled, and traceable.”
+
+3️⃣ IDE-Level Security (Shift-Left Security)
+Security starts inside the developer’s laptop:
+Static code analysis (SAST)
+Open-source dependency checks (SCA)
+IDE security plugins
+“Security is everyone’s responsibility, not just the security team’s.”
+
+4️⃣ Git Hooks & Validations
+Before code reaches the repository:
+Pre-commit hooks
+Code formatting
+Linting
+Pre-receive hooks
+Branch policies
+Commit validations
+“Bad code is stopped before it even enters the system.”
+
+5️⃣ Pull Request (PR) Process
+Developer raises a Pull Request
+Direct commits to main branch are blocked
+Peer review is mandatory
+“No review, no merge.”
+
+6️⃣ PR Validations
+Before merge is allowed:
+Build must succeed
+Tests must pass
+Security scans must be clean
+“Only green pipelines are allowed to merge.”
+
+🔶 LAYER 3: CI PIPELINE & QUALITY GATES (Bottom Layer)
+7️⃣ Azure Pipelines – Continuous Integration
+CI pipeline triggers:
+On Pull Request
+On merge to main branch
+
+🔹 CI Pipeline Stages
+
+1️⃣ Get Source
+Code pulled from Azure Repos
+
+2️⃣ Build
+Code compiled
+Languages: Java, .NET, JavaScript
+
+3️⃣ Unit Testing
+Automated tests executed
+Pipeline fails if tests fail
+
+4️⃣ Code Quality & Coverage
+Code smells
+Coverage %
+Maintainability
+
+5️⃣ Security Analysis
+Static code analysis
+Dependency scanning
+
+6️⃣ Build Analysis
+Performance checks
+Compliance validation
+
+8️⃣ Control Sets (Quality Gates)
+Enterprise compliance gates:
+Coding standards
+Security thresholds
+Coverage minimums
+Control Set 1, 2, 3 represent increasing strictness
+“These gates ensure enterprise-ready code only.”
+
+“This architecture ensures that from requirement to code, everything is planned, reviewed, tested, scanned, and validated before it ever reaches production.”
+-----------------------------------------------------
+
+Azure Boards:
+-------------
+Workitem:
+As we discussed earlier, Azure DevOps helps us plan and track work.
+The basic unit used to track any kind of work in Azure DevOps is called a Work Item.
+“In a bank, nothing should be done without visibility or traceability.
+Work items ensure that every change, task, or issue is clearly documented, assigned, tracked, and audited.”
+
+“Every work item contains important details such as description, priority, owner, status, and audit history.
+
+Workitems are organised in an hierarchy.
+We can categories work items and in our org we have few categories work items. They are
+- Core 
+- Test Management 
+- ESDLC
+- Work request 
+- Delivery Enabler 
+To learn more refer confluence page link.
+
+Lets check into core work item. 
+
+Initiatives - “An Initiative is a very high-level business objective that groups multiple Epics under a common goal.”
+
+1️⃣ Epic – Big Business Goal
+“An Epic represents a large business objective that takes a long time to complete.
+
+Bank example:
+‘Improve digital banking customer experience’”
+
+“Epics are high-level and usually span multiple months.”
+
+2️⃣ Feature – Major Capability
+“A Feature is a large functionality that supports an Epic.
+
+Bank example:
+‘Enable biometric login’
+‘Add instant loan approval’”
+
+“Features break big goals into manageable parts.”
+
+3️⃣ User Story / Requirement – What the User Needs
+
+“A User Story describes what the user wants and why.
+
+Bank example:
+‘As a customer, I want to log in using fingerprint so that I can access my account faster.’”
+
+“User stories focus on user value, not technical details.”
+
+4️⃣ Task – Actual Work Done by Team
+
+“A Task represents the actual work done by developers or testers.
+
+Bank example:
+‘Develop fingerprint authentication logic’
+‘Test login failure scenarios’”
+
+“Tasks are short, clear, and executable.”
+
+
+
+
+Work Item Lifecycle 
+-------------------------------------
+“Each work item moves through stages such as New, Active, Resolved, and Closed.
+This helps teams understand what is pending, in progress, and completed.”
+
+“This lifecycle ensures accountability and transparency.”
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

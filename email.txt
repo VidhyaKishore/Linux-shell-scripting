@@ -1,25 +1,34 @@
 #!/bin/bash
-# Function to create folders and files
-create_project() {
-  mkdir -p "$1"/{css,js,images}
-  touch "$1"/index.html "$1"/css/style.css "$1"/js/app.js
-  echo "Project structure created in ./$1"
-}
+ENV_FILE=".env"
+TEMPLATE_FILE="config.template.json"
+OUTPUT_FILE="config.json"
+REPORT_FILE="env_summary.txt"
+echo "Setting up development environment..."
 
-# Function to initialize git repo (no commit)
-init_git() {
-  cd "$1" || exit
-  git init > /dev/null 2>&1
-  touch README.md
-  git add . > /dev/null 2>&1
-  echo "Git repo initialized (no commit)"
-}
-# Main script
-read -p "Enter project name: " name
-if [ -z "$name" ]; then
-  echo "Project name is required."
+# === STEP 1: Load environment values ===
+if [ ! -f "$ENV_FILE" ]; then
+  echo ".env file not found!"
   exit 1
 fi
-create_project "$name"
-init_git "$name"
-echo "Setup complete for '$name'"
+
+# Using grep to extract values
+APP_NAME=$(grep "^APP_NAME=" "$ENV_FILE" | cut -d'=' -f2)
+PORT=$(grep "^PORT=" "$ENV_FILE" | cut -d'=' -f2)
+DB_USER=$(grep "^DB_USER=" "$ENV_FILE" | cut -d'=' -f2)
+DB_PASS=$(grep "^DB_PASS=" "$ENV_FILE" | cut -d'=' -f2)
+
+# === STEP 2: Replace placeholders in template using sed ===
+cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
+sed -i "s/{{APP_NAME}}/$APP_NAME/" "$OUTPUT_FILE"
+sed -i "s/{{PORT}}/$PORT/" "$OUTPUT_FILE"
+sed -i "s/{{DB_USER}}/$DB_USER/" "$OUTPUT_FILE"
+sed -i "s/{{DB_PASS}}/$DB_PASS/" "$OUTPUT_FILE"
+echo "Config file generated: $OUTPUT_FILE"
+
+
+# === STEP 3: Generate environment summary using awk ===
+echo "Generating summary report..."
+
+awk -F= '{ printf "- %s = %s\n", $1, $2 }' "$ENV_FILE" > "$REPORT_FILE"
+echo "--- End of Summary ---" >> "$REPORT_FILE"
+echo "Summary written to: $REPORT_FILE"

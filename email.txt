@@ -1,1 +1,25 @@
             if [[ "$file" == "$EMPTY_DIR/"* || "$file" == "$NON_EMPTY_DIR/"* ]]; then
+
+“This condition checks whether the file belongs to either the empty directory or the non-empty directory.”
+
+How the Check Works
+
+$file contains the full path of a file
+$EMPTY_DIR/ is the starting path of the first directory
+* means anything inside that directory
+== checks whether the file path starts with that directory
+|| means OR
+
+It checks location, not file content
+
+* means any file inside
+|| means either one is enough
+[[ ]] is used for safe string matching
+
+✅ Final Decision Rule
+Condition	Result
+File is in EMPTY_DIR	TRUE
+File is in NON_EMPTY_DIR	TRUE
+File is in neither	FALSE
+
+If the result is TRUE, the code inside then runs.

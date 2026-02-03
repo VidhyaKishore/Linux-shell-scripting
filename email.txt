@@ -1,34 +1,9 @@
-#!/bin/bash
-ENV_FILE=".env"
-TEMPLATE_FILE="config.template.json"
-OUTPUT_FILE="config.json"
-REPORT_FILE="env_summary.txt"
-echo "Setting up development environment..."
-
-# === STEP 1: Load environment values ===
-if [ ! -f "$ENV_FILE" ]; then
-  echo ".env file not found!"
-  exit 1
-fi
-
-# Using grep to extract values
-APP_NAME=$(grep "^APP_NAME=" "$ENV_FILE" | cut -d'=' -f2)
-PORT=$(grep "^PORT=" "$ENV_FILE" | cut -d'=' -f2)
-DB_USER=$(grep "^DB_USER=" "$ENV_FILE" | cut -d'=' -f2)
-DB_PASS=$(grep "^DB_PASS=" "$ENV_FILE" | cut -d'=' -f2)
-
-# === STEP 2: Replace placeholders in template using sed ===
-cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
-sed -i "s/{{APP_NAME}}/$APP_NAME/" "$OUTPUT_FILE"
-sed -i "s/{{PORT}}/$PORT/" "$OUTPUT_FILE"
-sed -i "s/{{DB_USER}}/$DB_USER/" "$OUTPUT_FILE"
-sed -i "s/{{DB_PASS}}/$DB_PASS/" "$OUTPUT_FILE"
-echo "Config file generated: $OUTPUT_FILE"
-
-
-# === STEP 3: Generate environment summary using awk ===
-echo "Generating summary report..."
-
-awk -F= '{ printf "- %s = %s\n", $1, $2 }' "$ENV_FILE" > "$REPORT_FILE"
-echo "--- End of Summary ---" >> "$REPORT_FILE"
-echo "Summary written to: $REPORT_FILE"
+appadmintemp@v313e300-appserver-df-244-southe-dev001[~] $ sudo podman run -d --cap-add=IPC_LOCK --name hcv --network=net1 -p 8200:8200  --security-opt label=disable hashicorp/vault server -dev
+a568b49fa864775dbd723a0e1fd8a011be09b7dbf214b768b89141a0855dc071
+appadmintemp@v313e300-appserver-df-244-southe-dev001[~] $ sudo podman ps
+CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
+appadmintemp@v313e300-appserver-df-244-southe-dev001[~] $ sudo podman ps -a
+CONTAINER ID  IMAGE                                                            COMMAND      CREATED        STATUS                    PORTS                   NAMES
+a568b49fa864  artifactory.global.standardchartered.com/hashicorp/vault:latest  server -dev  7 seconds ago  Exited (1) 7 seconds ago  0.0.0.0:8200->8200/tcp  hcv
+appadmintemp@v313e300-appserver-df-244-southe-dev001[~] $ sudo podman logs hcv
+su-exec: vault: Permission denied

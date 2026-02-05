@@ -1,11 +1,21 @@
-- name: Print client hostname
-  hosts: all
-  gather_facts: no
-  tasks:
-    - name: Get hostname
-      command: hostname
-      register: host_out
-
-    - name: Print hostname
-      debug:
-        msg: "Client hostname is {{ host_out.stdout }}"
+# condition based execution
+# verify the presence of file and create if not available
+---
+  - hosts: scb 
+   # become: true    
+    vars:
+      - user: emerg1  
+    tasks:
+      - name: Check if file already exists
+        command: ls /home/{{ user }}/project.txt
+        register: file_exists
+        ignore_errors: yes
+      - name: create file for user
+        file:
+          path: /home/{{ user }}/project.txt
+          state: touch
+        when: file_exists is failed
+      - name: show message if file exists
+        debug:
+          msg: The user file already exists.
+        when: file_exists is succeeded

@@ -1,21 +1,18 @@
-# condition based execution
-# verify the presence of file and create if not available
 ---
   - hosts: scb 
-   # become: true    
-    vars:
-      - user: emerg1  
-    tasks:
-      - name: Check if file already exists
-        command: ls /home/{{ user }}/project.txt
-        register: file_exists
-        ignore_errors: yes
-      - name: create file for user
-        file:
-          path: /home/{{ user }}/project.txt
-          state: touch
-        when: file_exists is failed
-      - name: show message if file exists
-        debug:
-          msg: The user file already exists.
-        when: file_exists is succeeded
+    become: true    
+    tasks: 
+    - name: Handling failures demo
+      block:
+        - name: Compare files
+          raw: diff /home/emerg1/file1.txt /home/emerg1/file2.txt
+          register: diff_cmd
+          failed_when: diff_cmd.rc == 0 or diff_cmd.rc >= 2
+      rescue:
+        - name: display errors
+          debug:
+            msg: 'Both the files are identical'
+      always:
+        - name:
+          debug:
+            msg: "this block will execute always"

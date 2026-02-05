@@ -1,9 +1,11 @@
-appadmintemp@v313e300-appserver-df-244-southe-dev001[~] $ sudo podman run -d --cap-add=IPC_LOCK --name hcv --network=net1 -p 8200:8200  --security-opt label=disable hashicorp/vault server -dev
-a568b49fa864775dbd723a0e1fd8a011be09b7dbf214b768b89141a0855dc071
-appadmintemp@v313e300-appserver-df-244-southe-dev001[~] $ sudo podman ps
-CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
-appadmintemp@v313e300-appserver-df-244-southe-dev001[~] $ sudo podman ps -a
-CONTAINER ID  IMAGE                                                            COMMAND      CREATED        STATUS                    PORTS                   NAMES
-a568b49fa864  artifactory.global.standardchartered.com/hashicorp/vault:latest  server -dev  7 seconds ago  Exited (1) 7 seconds ago  0.0.0.0:8200->8200/tcp  hcv
-appadmintemp@v313e300-appserver-df-244-southe-dev001[~] $ sudo podman logs hcv
-su-exec: vault: Permission denied
+- name: Print client hostname
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Get hostname
+      command: hostname
+      register: host_out
+
+    - name: Print hostname
+      debug:
+        msg: "Client hostname is {{ host_out.stdout }}"

@@ -1,18 +1,3 @@
----
-  - hosts: scb 
-    become: true    
-    tasks: 
-    - name: Handling failures demo
-      block:
-        - name: Compare files
-          raw: diff /home/emerg1/file1.txt /home/emerg1/file2.txt
-          register: diff_cmd
-          failed_when: diff_cmd.rc == 0 or diff_cmd.rc >= 2
-      rescue:
-        - name: display errors
-          debug:
-            msg: 'Both the files are identical'
-      always:
-        - name:
-          debug:
-            msg: "this block will execute always"
+node-builder:20.19.1-micro-6314908 as builder
+
+node:20.19.1-micro-6679849

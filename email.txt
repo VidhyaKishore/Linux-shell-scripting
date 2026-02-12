@@ -1,1 +1,37 @@
-docker run --link db:dbserver -e spring.datasource.url=jdbc:mysql://dbserver:3306/docker -p 80:8080 -d brainupgrade/request-logger:microservice
+43.	Create a Dockerfile with the following content 
+FROM node as initial
+WORKDIR /app
+COPY package.json .
+COPY server1.js .
+RUN ["npm","install"]
+EXPOSE 3000
+CMD ["node", "server1.js"]
+44.	Create two docker volumes for sending input to and receiving output from Node application
+    docker volume create input
+    docker volume create output
+45.	Navigate to input volume -- cd /var/lib/docker/volumes/input/_data/
+46.	Create a  users.json file of the following format 
+{
+   “user” : “<yourname>”
+}
+47.	Navigate back to nodeapp – 
+cd ~/nodeapp
+48.	Build the image 
+docker build -t nodeimg .
+49.	Create two containers mapping the volumes 
+docker run -d --name n1 -p 3000:3000 --mount src=input,target=/app/input –mount src=output,target=/app/output nodeimg
+docker run -d --name n2 -p 3001:3000 --mount src=input,target=/app/input –mount src=output,target=/app/output nodeimg
+50.	Check if both containers are running using docker ps 
+51.	Get the hostname of the containers 
+ docker exec -it n1 hostname
+52.	Access the application using curl command 
+curl http://localhost:3000
+curl http://localhost:3001
+53.	Check the content of the  file created in the volume / var/lib/docker/volumes/output/_data/
+
+
+
+
+
+54.	 You can try the same using bind mount 
+55.	  docker run -d --name n3 -p 3003:3000 --mount type=bind,src=<folder>,target=/app/input --mount src=output,target=/app/output nodeimg

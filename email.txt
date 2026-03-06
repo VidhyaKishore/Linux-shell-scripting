@@ -1,3 +1,22 @@
-root@cloud-lab:/shared$ docker run -itd --name n1 -p 3000:3000 --mount type=volume,src=input,target=/app/input –mount type=volume,src=output,target=/app/output nodeapp
-docker: invalid reference format.
-See 'docker run --help'
+•	Create a container to store a table in postgres. 
+sudo podman run -d --name postgres-db --network net1 -p 5432:5432 -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=dbpass -e POSTGRES_DB=mydb artifactory.global.standardchartered.com/postgres:12
+
+•	Open the container and insert the table. 
+sudo podman exec -it postgres-db psql -U dbuser -d mydb 
+
+•	To create a table use the following details inside the postgres container.
+
+CREATE TABLE employee (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  department TEXT NOT NULL
+);
+INSERT INTO employee (name, department) VALUES
+('Alice', 'DEV'),
+('Bob', 'UAT'),
+('Charlie', 'OPS');
+
+
+•	To check the table and exit from the table.
+SELECT * FROM employee;
+\q

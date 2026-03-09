@@ -95,3 +95,55 @@ package.json
     "node-fetch": "^3.3.2"
   }
 }
+
+const express = require("express");
+const axios = require("axios");
+const { Client } = require("pg");
+
+const app = express();
+
+app.get("/", async (req, res) => {
+
+try {
+
+// Fetch secret from Vault KV v2
+const vaultResponse = await axios.get(
+"http://localhost:8200/v1/database/data/postgres",
+{
+headers:{
+"X-Vault-Token":"root"
+}
+}
+);
+
+const data = vaultResponse.data.data.data;
+
+// Connect to PostgreSQL
+const client = new Client({
+host: data.host,
+user: data.username,
+password: data.password,
+database: data.database,
+port: 5432
+});
+
+await client.connect();
+
+// Query employee table
+const result = await client.query("SELECT * FROM public.employee");
+
+res.json(result.rows);
+
+await client.end();
+
+}
+
+catch(err){
+res.send(err.message);
+}
+
+});
+
+app.listen(3000, ()=>{
+console.log("App running on port 3000");
+});

@@ -650,6 +650,127 @@ app.get("/user/id/:empid", async (req, res) => {
 
 /* Start server */
 app.listen(PORT, () => {
+------------------------------
+testing for vuser1
+-----------------
+import express from "express";
+import axios from "axios";
+import pg from "pg";
+
+const { Client } = pg;
+
+const app = express();
+
+/* Vault configuration */
+const VAULT_ADDR = "******";
+
+const VAULT_USER = "vuser1";
+const VAULT_PASS = "pass123";
+const SECRET_PATH = "secret/data/****/****";
+
+/* PostgreSQL configuration */
+const POSTGRES_HOST = "localhost";
+const POSTGRES_DB = "mydb";
+const POSTGRES_PORT = 5432;
+
+const PORT = 3000;
+/* Route 1: Greeting */
+app.get("/user/:username", (req, res) => {
+
+  const username = req.params.username;
+
+  res.json({
+    message: `Hello, ${username}!`,
+    username: username
+  });
+
+});
+
+/* Route 2: Fetch employee by ID */
+app.get("/user/id/:empid", async (req, res) => {
+
+  const empid = parseInt(req.params.empid);
+  console.log(empid);
+
+  if (isNaN(empid)) {
+    return res.status(400).json({ error: "Invalid employee ID" });
+  }
+
+  try {
+
+    console.log("Calling Vault...");
+
+    /* Login vault */
+    const loginResponse = await axios.post(
+     '${VAULT_ADDR}/v1/auth/userpass/login/${VAULT_USER}',
+     {
+             password: VAULT_PASS
+     }
+    );
+    const clientToken = loginResponse.data.auth.client_token;
+
+    console.log("Vault login sussfull");
+    console.log("Vault token:", clientToken);
+
+    const vaultResponse = await axios.get(
+      `${VAULT_ADDR}/v1/${SECRET_PATH}`,
+      {
+        headers: {
+          "X-Vault-Token": clientToken
+        }
+      }
+    );
+    console.log("response from Vault", vaultResponse.data);
+
+    const { username, password } = vaultResponse.data.data.data;
+
+    console.log("Vault username:", username);
+    console.log("Vault password:", password);
+
+    const client = new Client({
+      user: username,
+      password: password,
+      host: "localhost",
+      database: "mydb",
+      port: 5432
+    });
+
+    console.log("Connecting to PostgreSQL...");
+
+    await client.connect();
+   console.log("Connected to PostgreSQL");
+
+    const result = await client.query(
+      "SELECT id, name FROM public.employee WHERE id = $1",
+      [empid]
+    );
+
+    await client.end();
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+
+    res.json(result.rows[0]);
+
+  } catch (err) {
+
+    console.error("Error:", err.message);
+
+    res.status(500).json({ error: err.message });
+
+  }
+
+});
+
+
+/* Start server */
+app.listen(PORT, () => {
+
+  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Vault path = ${VAULT_ADDR}/v1/${SECRET_PATH}`);
+
+});
 
   console.log(`Server running at http://localhost:${PORT}`);
   console.log(`Vault path = ${VAULT_ADDR}/v1/${SECRET_PATH}`);

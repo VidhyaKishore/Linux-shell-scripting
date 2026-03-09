@@ -35,3 +35,32 @@ async function run() {
 }
 
 run();
+
+
+$$
+BEGIN
+    FOR i IN 1..25 LOOP
+        EXECUTE format(
+            'CREATE ROLE dbuser%s WITH LOGIN PASSWORD %L;',
+            i,
+            'dbuser' || i
+        );
+        EXECUTE format(
+            'CREATE SCHEMA dbuser%s AUTHORIZATION dbuser%s;',
+            i, i
+        );
+        EXECUTE format(
+            'ALTER ROLE dbuser%s SET search_path = dbuser%s;',
+            i, i
+        );
+        EXECUTE format(
+            'GRANT USAGE ON SCHEMA dbuser%s TO dbuser%s;',
+            i, i
+        );
+        EXECUTE format(
+            'GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA dbuser%s TO dbuser%s;',
+            i, i
+        );
+    END LOOP;
+END
+$$;

@@ -439,3 +439,110 @@ app.listen(PORT, async () => {
   await startupTest();
 
 });
+
+
+---------------------------------------------------------------
+import express from "express";
+import axios from "axios";
+import pg from "pg";
+
+const { Client } = pg;
+
+const app = express();
+
+/* Vault configuration */
+const VAULT_ADDR = "http://127.0.0.1:8200";
+const VAULT_TOKEN = "root";
+const SECRET_PATH = "secret/data/database/postgres";
+
+/* PostgreSQL configuration */
+const POSTGRES_HOST = "localhost";
+const POSTGRES_DB = "mydb";
+const POSTGRES_PORT = 5432;
+
+const PORT = 3000;
+
+/* Route 1: Greeting */
+app.get("/user/:username", (req, res) => {
+
+  const username = req.params.username;
+
+  res.json({
+    message: `Hello, ${username}!`,
+    username: username
+  });
+
+});
+
+
+/* Route 2: Fetch employee by ID */
+app.get("/user/id/:empid", async (req, res) => {
+
+  const empid = parseInt(req.params.empid);
+
+  if (isNaN(empid)) {
+    return res.status(400).json({ error: "Invalid employee ID" });
+  }
+
+  try {
+
+    console.log("Calling Vault...");
+
+    const vaultResponse = await axios.get(
+      `${VAULT_ADDR}/v1/${SECRET_PATH}`,
+      {
+        headers: {
+          "X-Vault-Token": VAULT_TOKEN
+        }
+      }
+    );
+
+    const { username, password } = vaultResponse.data.data.data;
+
+    console.log("Vault credentials received:", username);
+
+    const client = new Client({
+      user: username,
+      password: password,
+      host: POSTGRES_HOST,
+      database: POSTGRES_DB,
+      port: POSTGRES_PORT
+    });
+
+    console.log("Connecting to PostgreSQL...");
+
+    await client.connect();
+
+    console.log("Connected to PostgreSQL");
+
+    const result = await client.query(
+      "SELECT id, name FROM public.employee WHERE id = $1",
+      [empid]
+    );
+
+    await client.end();
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+
+    res.json(result.rows[0]);
+
+  } catch (err) {
+
+    console.error("Error:", err.message);
+
+    res.status(500).json({ error: err.message });
+
+  }
+
+});
+
+
+/* Start server */
+app.listen(PORT, () => {
+
+  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Vault path = ${VAULT_ADDR}/v1/${SECRET_PATH}`);
+
+});

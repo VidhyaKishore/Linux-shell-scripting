@@ -144,6 +144,29 @@ res.send(err.message);
 
 });
 
+
+console.log("Request received");
+
+console.log("Calling Vault...");
+
+const vaultResponse = await axios.get(
+"http://localhost:8200/v1/secret/data/database/postgres",
+{
+headers:{
+"X-Vault-Token":"root"
+}
+}
+);
+
+console.log("Vault response received");
+
+const data = vaultResponse.data.data.data;
+
+console.log("Connecting to database...");
+
+await client.connect();
+
+console.log("Database connected");
 app.listen(3000, ()=>{
 console.log("App running on port 3000");
 });

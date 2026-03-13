@@ -1,15 +1,21 @@
 # condition based execution
+# verify the presence of file and create if not available
 ---
   - hosts: scb 
-    #become: true
-    #ignore_errors: yes
+   # become: true    
     vars:
-      - create_file: yes
-      - user: emerg1
+      - user: emerg1  
     tasks:
-      - name: create a file in user's home directory
+      - name: Check if file already exists
+        command: ls /home/{{ user }}/project.txt
+        register: file_exists
+        ignore_errors: yes
+      - name: create file for user
         file:
-          path: /home/{{ user }}/data.txt
-          state: touch 
-          modification_time: now
-        when: create_file
+          path: /home/{{ user }}/project.txt
+          state: touch
+        when: file_exists is failed
+      - name: show message if file exists
+        debug:
+          msg: The user file already exists.
+        when: file_exists is succeeded

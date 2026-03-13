@@ -1,25 +1,15 @@
+# condition based execution
 ---
-- name: Install and manage httpd on RedHat
-  hosts: webservers
-  become: yes  # Elevate to sudo
-  tasks:
-
-    - name: Install httpd package
-      yum:
-        name: httpd
-        state: present
-
-    - name: Start httpd service
-      service:
-        name: httpd
-        state: started
-
-    - name: Enable httpd to start on boot
-      service:
-        name: httpd
-        enabled: yes
-
-    - name: Restart httpd service
-      service:
-        name: httpd
-        state: restarted
+  - hosts: scb 
+    #become: true
+    #ignore_errors: yes
+    vars:
+      - create_file: yes
+      - user: emerg1
+    tasks:
+      - name: create a file in user's home directory
+        file:
+          path: /home/{{ user }}/data.txt
+          state: touch 
+          modification_time: now
+        when: create_file

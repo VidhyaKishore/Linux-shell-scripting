@@ -1,21 +1,40 @@
-# condition based execution
-# verify the presence of file and create if not available
 ---
   - hosts: scb 
-   # become: true    
+    become: true
     vars:
-      - user: emerg1  
+      page_title: My handler Landing Page
+      page_description: This is my handler page description.
+      doc_root: /usr/share/nginx/html/mypage
     tasks:
-      - name: Check if file already exists
-        command: ls /home/{{ user }}/project.txt
-        register: file_exists
-        ignore_errors: yes
-      - name: create file for user
+      - name: install nginx in amazon 2 linux
+        package:
+          name: nginx    
+          state: present
+      
+      - name: Creates directory
         file:
-          path: /home/{{ user }}/project.txt
+          path: /etc/nginx/sites-available/
+          state: directory  
+
+      - name : create file default  
+        file:
+          path: /etc/nginx/sites-available/default
           state: touch
-        when: file_exists is failed
-      - name: show message if file exists
-        debug:
-          msg: The user file already exists.
-        when: file_exists is succeeded
+          mode: '0744'           
+
+      - name: add  a line "include /etc/nginx/sites-enabled/*;"
+        lineinfile:
+          path: /etc/nginx/nginx.conf
+          line: include /etc/nginx/sites-enabled/*
+          create: yes
+
+      - name: Make sure new doc root exists
+        file:
+          path: "{{ doc_root }}"
+          state: directory
+          mode: '0755'
+
+      - name: Apply Page Template
+        template:
+          src: templates/landing-page.html.j2
+          dest: "{{ doc_root }}/index.html"

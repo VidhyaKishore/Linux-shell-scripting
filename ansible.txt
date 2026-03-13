@@ -38,3 +38,19 @@
         template:
           src: templates/landing-page.html.j2
           dest: "{{ doc_root }}/index.html"
+      - name: Replace document root on default Nginx configuration
+        replace:
+          path: /etc/nginx/sites-available/default
+          regexp: '(\s+)root /usr/share/nginx/html;(\s+.*)?$' 
+          replace: \g<1>root {{ doc_root }};\g<2>
+        notify: restart nginx
+
+      - name: enable the service
+        service:
+          name: nginx
+          enabled: yes
+    handlers:    
+      - name: restart nginx
+        service:
+          name: nginx
+          state: restarted
